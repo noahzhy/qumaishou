@@ -3,7 +3,9 @@ import cv2
 import time
 
 
-def image_merge(out_path="output/"):
+out_path_dir="output"
+
+def image_merge(out_path=out_path_dir):
     pass
 
 
