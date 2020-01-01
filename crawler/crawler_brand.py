@@ -25,8 +25,7 @@ def requests_brand(brand_name, brand_url):
         r = session.get(url=url, headers=headers)
         soup = BeautifulSoup(r.text, "html5lib")
         brandIndexList = soup.find_all('div', id='brandIndexList_GLBL')
-        print(brandIndexList[0].select('dl > dd > ul > li > a'))
-        [brand.append(i) for i in brandIndexList[0].select('dl > dd > ul > li > a')]
+        return brandIndexList[0].select('dl > dd > ul > li > a')
         # print('Special Brand Total:', len(brand))
 
     def requests_brand_from_A_to_Z():
@@ -34,10 +33,9 @@ def requests_brand(brand_name, brand_url):
         r = session.get(url=url, headers=headers)
         soup = BeautifulSoup(r.text, "lxml")
         brandIndexList = soup.find_all('body')
-        [brand.append(i) for i in brandIndexList[0].select('dl > dd > ul > li > a')]
+        return brandIndexList[0].select('dl > dd > ul > li > a')
 
-    requests_special_brand()
-    requests_brand_from_A_to_Z()
+    brand = requests_special_brand() + requests_brand_from_A_to_Z()
 
     print('Total:', len(brand))
     for i in brand:
