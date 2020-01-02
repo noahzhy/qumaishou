@@ -26,7 +26,7 @@ headers = {
 }
 
 def get_brnd_No(dispShopNo):
-    url = 'http://chn.lottedfs.cn/kr/display/brand?dispShopNo={}'.format(dispShopNo)
+    url = 'http://eng.lottedfs.com/kr/display/brand?dispShopNo={}'.format(dispShopNo)
     r = session.get(url=url, headers=headers)
     soup = BeautifulSoup(r.text, "html5lib")
     BrndNo = soup.find_all('input', id='thisBrndNo', type='hidden')
