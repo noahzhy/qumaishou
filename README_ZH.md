@@ -8,4 +8,4 @@
 预测库（预留）用于后期统计和预测，预计和代购的客户的年龄段以及某时间段的热销产品成正比。
 
 ### 爬虫流程图
-<img src="flowchart/爬虫流程图_v1.1.jpg" alt="爬虫流程图" style="zoom:50%;" />
+<img src="flowchart/爬虫流程图_v1.2.jpg" alt="爬虫流程图" style="zoom:50%;" />

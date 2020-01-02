@@ -89,7 +89,7 @@ def get_product_list(dispShopNo):
 
 
 def main():
-    print(get_product_list(10000130))
+    print(get_product_list(10011012))
 
 
 if __name__ == "__main__":
