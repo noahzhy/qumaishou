@@ -89,8 +89,18 @@ def get_product_list(dispShopNo):
 
 
 def main():
-    print(get_product_list(10006203))
+    print(get_product_list(10000130))
 
 
 if __name__ == "__main__":
     main()
+
+
+'''http://chn.lottedfs.cn/kr/display/brand/getLrnkBrandPrdListAjax?
+    listType=img
+    &brndNo=10073
+    &prdSortStdCd=01
+    &cntPerPage=500
+    &curPageNo=1
+    &viewType01=0
+    &lodfsAdltYn=N'''

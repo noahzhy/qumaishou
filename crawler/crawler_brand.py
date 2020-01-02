@@ -18,16 +18,18 @@ def get_all_brand():
     }
 
     def get_special_brand():
-        url = 'http://chn.lottedfs.cn/kr/display/brand'
+        url = 'http://kor.lottedfs.com/kr/display/brand'
         r = session.get(url=url, headers=headers)
         soup = BeautifulSoup(r.text, "html5lib")
-        brandIndexList = soup.find_all('div', id='brandIndexList_GLBL')
+        # for english version
+        brandIndexList = soup.find_all('div', id='brandIndexList_ENG')
+        # brandIndexList = soup.find_all('div', id='brandIndexList_GLBL')
         return brandIndexList[0].select('dl > dd > ul > li > a')
         # print('Special Brand Total:', len(brand))
 
     def get_brand_from_A_to_Z(flag='CATE'):
         # flag=GLBL 表示按照拼音序列，flag=ENG 表示按照英文排序，flag=CATE 表示按照类别排列
-        url = 'http://chn.lottedfs.cn/kr/display/brand/getBrandMainBrandListAjax?flag={}'.format(flag)
+        url = 'http://kor.lottedfs.com/kr/display/brand/getBrandMainBrandListAjax?flag={}'.format(flag)
         r = session.get(url=url, headers=headers)
         soup = BeautifulSoup(r.text, "lxml")
         brandIndexList = soup.find_all('body')
