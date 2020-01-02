@@ -14,7 +14,7 @@ import tools.database_tool as db_tool
     &dispShopNo=10000863
     &brndNo=19207 //重要的是这个 <input type="hidden" id="thisBrndNo" value="1001495"/>
     &prdSortStdCd=01
-    &catNo=&cntPerPage=50
+    &catNo=&cntPerPage=100
     &curPageNo=1
     &viewType01=0
     &lodfsAdltYn=N
@@ -30,66 +30,66 @@ def get_brnd_No(dispShopNo):
     r = session.get(url=url, headers=headers)
     soup = BeautifulSoup(r.text, "html5lib")
     BrndNo = soup.find_all('input', id='thisBrndNo', type='hidden')
+    # print(BrndNo[0]["value"])
     return str(BrndNo[0]["value"])
 
 
 def get_product_list(dispShopNo):
     df = pd.DataFrame(columns=['product_No', 'brand_name', 'product_name', 'img_url', 'us_price'])
+    # 通过店铺号来获取品牌号
     brndNo = get_brnd_No(dispShopNo)
-    # print(brndNo)
+    print('Test>>>', brndNo)
+    # 默认从第一页开始，使用动态的 page_list 来控制循环
+    page_list = [1]
+    FLAG_GET_PAGES = False
 
-    def get_page_total():
-        return 1
+    for curPage in page_list:
+        url = '''http://chn.lottedfs.cn/kr/display/brand/getLrnkBrandPrdListAjax?
+            listType=img
+            &brndNo={}
+            &prdSortStdCd=01
+            &cntPerPage=500
+            &curPageNo={}
+            &viewType01=0
+            &lodfsAdltYn=N'''.format(brndNo, curPage).replace('\n', '').replace('\r', '').replace(' ', '')
+        # print(url)
+        r = session.get(url=url, headers=headers)
+        soup = BeautifulSoup(r.text, "lxml")
+        # <div class="paging ">
+        if not FLAG_GET_PAGES:
+            pages_tag = soup.find_all('div', class_='paging')[0].select('a')[-1]['href']
+            # <a href="javascript:fn_movePage(31);" class="last">Last</a>
+            pages = int(''.join(list(filter(str.isdigit, pages_tag))))
+            # print(pages)
+            print('pages:', pages)
+            [page_list.append(i) for i in range(2, pages+1)]
+            FLAG_GET_PAGES = True
 
-    curPage = get_page_total()
+        productMd = soup.find_all('ul', class_='listUl')
 
-    url = '''http://chn.lottedfs.cn/kr/display/brand/getLrnkBrandPrdListAjax?
-        listType=img
-        &brndNo={}
-        &prdSortStdCd=01
-        &cntPerPage=50
-        &curPageNo={}
-        &viewType01=0
-        &lodfsAdltYn=N'''.format(brndNo, curPage).replace('\n', '').replace('\r', '').replace(' ', '')
-    # print(url)
-    r = session.get(url=url, headers=headers)
-    soup = BeautifulSoup(r.text, "lxml")
-    # print(r.text)
-    # <div class="paging ">
-    productMd = soup.find_all('ul', class_='listUl')
-    # <input type="hidden" class="prdNoHidden" value="20000558611">
-    for i in productMd[0].select('li', class_='productMd'):
-        prdNo = i.find_all('input', class_='prdNoHidden')[0]['value']
-        # print(prdNo)
-        brand = i.find_all('div', class_='brand')[0].select('strong')[0].get_text()
-        # print(brand)
-        product = i.find_all('div', class_='product')[0].get_text()
-        # print(product)
-        img_url = i.find_all('div', class_='img')[0].select('img')[0]['src'].replace('/dims/resize/180x180','')
-        # print(img_url)
-        us_price = i.find_all('div', class_='discount')[0].select('strong')[0].get_text()
-        # print(us_price)
+        # <input type="hidden" class="prdNoHidden" value="20000558611">
+        for i in productMd[0].select('li', class_='productMd'):
+            prdNo = i.find_all('input', class_='prdNoHidden')[0]['value']
+            brand = i.find_all('div', class_='brand')[0].select('strong')[0].get_text()
+            product = i.find_all('div', class_='product')[0].get_text()
+            img_url = i.find_all('div', class_='img')[0].select('img')[0]['src'].replace('/dims/resize/180x180','')
+            us_price = i.find_all('div', class_='discount')[0].select('strong')[0].get_text()
 
-        data = {
-            'product_No': prdNo, 
-            'brand_name': brand,
-            'product_name': product,
-            'img_url': img_url,
-            'us_price': us_price
-        }
-        df = df.append(data, ignore_index=True)
+            data = {
+                'product_No': prdNo, 
+                'brand_name': brand,
+                'product_name': product,
+                'img_url': img_url,
+                'us_price': us_price
+            }
+            df = df.append(data, ignore_index=True)
     
     # print(df.size())
     db_tool.db_product_img(df)
 
-    # return productMd[0].select('dl > dd > ul > li > a')
-
-
-
-
 
 def main():
-    print(get_product_list(10008476))
+    print(get_product_list(10006203))
 
 
 if __name__ == "__main__":
