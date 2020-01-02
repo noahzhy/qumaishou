@@ -8,19 +8,16 @@ from bs4 import BeautifulSoup
 import tools.database_tool as db_tool
 
 
-domain = 'http://chn.lottedfs.cn'
-brand_name = []
-brand_url = []
+def get_all_brand():
+    brand, brand_name, brand_url = [], [], []
+    domain = 'http://chn.lottedfs.cn'
 
-def requests_brand(brand_name, brand_url):
-    brand = []
-    
     session = requests.Session()
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36',
     }
 
-    def requests_special_brand():
+    def get_special_brand():
         url = 'http://chn.lottedfs.cn/kr/display/brand'
         r = session.get(url=url, headers=headers)
         soup = BeautifulSoup(r.text, "html5lib")
@@ -28,14 +25,14 @@ def requests_brand(brand_name, brand_url):
         return brandIndexList[0].select('dl > dd > ul > li > a')
         # print('Special Brand Total:', len(brand))
 
-    def requests_brand_from_A_to_Z():
+    def get_brand_from_A_to_Z():
         url = 'http://chn.lottedfs.cn/kr/display/brand/getBrandMainBrandListAjax?flag=GLBL'
         r = session.get(url=url, headers=headers)
         soup = BeautifulSoup(r.text, "lxml")
         brandIndexList = soup.find_all('body')
         return brandIndexList[0].select('dl > dd > ul > li > a')
 
-    brand = requests_special_brand() + requests_brand_from_A_to_Z()
+    brand = get_special_brand() + get_brand_from_A_to_Z()
 
     print('Total:', len(brand))
     for i in brand:
@@ -45,9 +42,11 @@ def requests_brand(brand_name, brand_url):
         else:
             brand_url.append(domain + i['href'].strip())
 
+    return brand_name, brand_url
+
 
 def main():
-    requests_brand(brand_name, brand_url)
+    brand_name, brand_url = get_all_brand()
     db_tool.db_brand(brand_name, brand_url)
     pass
 
