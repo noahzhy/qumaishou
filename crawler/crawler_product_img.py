@@ -1,15 +1,15 @@
+import os
 import sys
 # 导入同级目录下其他文件夹下的文件
 sys.path.append("./")
-import os
-import requests
+
 import pandas as pd
+import requests
 from bs4 import BeautifulSoup
 from pypinyin import lazy_pinyin
 
-
-import tools.database_tool as db_tool
 import tools.data_check as data_check
+import tools.database_tool as db_tool
 
 
 '''http://chn.lottedfs.cn/kr/display/brand/getLrnkBrandPrdListAjax?
@@ -47,7 +47,7 @@ def get_product_list(dispShopNo):
     #     'img_url': img_url,
     #     'us_price': us_price
     # }
-    df = pd.DataFrame(columns=['tag', 'product_No', 'us_price', 'brand_name', 'product_name', 'img_url'])
+    df = pd.DataFrame(columns=['tag', 'brand_No', 'product_No', 'us_price', 'brand_name_chn', 'brand_name_eng', 'product_name', 'img_url'])
     # 通过店铺号来获取品牌号
     brndNo = get_brnd_No(dispShopNo)
     print('Test>>>', brndNo)
@@ -93,7 +93,8 @@ def get_product_list(dispShopNo):
                 tag_sort = ' '.join(sorted_list)
 
             prdNo = i.find_all('input', class_='prdNoHidden')[0]['value']
-            brand = i.find_all('div', class_='brand')[0].select('strong')[0].get_text()
+            brand_chn = i.find_all('div', class_='brand')[0].select('strong')[0].get_text()
+            brand_eng = i.find_all('div', class_='brand')[0].contents[-1].strip()
             product = i.find_all('div', class_='product')[0].get_text()
             img_url = i.find_all('div', class_='img')[0].select('img')[0]['src'].replace('/dims/resize/180x180','')
             us_price = i.find_all('div', class_='price')[0].select('span')[0].get_text()
@@ -103,8 +104,10 @@ def get_product_list(dispShopNo):
 
             data = {
                 'tag': tag_sort.strip(),
+                'brand_No': brndNo,
                 'product_No': prdNo,
-                'brand_name': brand,
+                'brand_name_chn': brand_chn,
+                'brand_name_eng': brand_eng,                
                 'product_name': product.strip(),
                 'img_url': img_url,
                 'us_price': us_price
@@ -117,8 +120,38 @@ def get_product_list(dispShopNo):
 
 def main():
     # 输入英文品牌数据库的品牌编号
-    print(get_product_list(10024315))
+    print(get_product_list(10006001))
 
 
 if __name__ == "__main__":
     main()
+
+
+
+'''
+    http://chn.lottedfs.cn/kr/display/brand/brandGwanPrdList?
+    returnFilePath=display%2Fcommon%2Fbrand%2FesteeLauder%2Ffragments%2F
+    &returnFileName=esteeLauderPrdList
+    &thisDispShopNo=10006056
+    &prdSortStdCd=01
+    &cntPerPage=15
+    &curPageNo=1
+'''
+
+'''
+    returnFilePath: display/common/brand/esteeLauder/fragments/
+    returnFileName: esteeLauderPrdList
+    thisDispShopNo: 10021874
+    prdSortStdCd: 01
+    cntPerPage: 15
+    curPageNo: 1
+'''
+
+'''
+    returnFilePath: display/common/brand/mac/fragments/
+    returnFileName: macPrdListArea_new
+    thisDispShopNo: 10021104
+    prdSortStdCd: 01
+    cntPerPage: 12
+    curPageNo: 1
+'''

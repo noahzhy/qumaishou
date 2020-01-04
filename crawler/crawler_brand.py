@@ -70,8 +70,8 @@ def get_all_brand(flag='ENG', a_to_z_flag='CATE'):
 def main():
     # 中文拼音排序 品牌 数据库
     # 英文类别 品牌 数据库（常用）
-    # get_all_brand('ENG', 'CATE')
-    db_tool.db_brand_merge('db_brand_chn_merge', get_all_brand('CHN', 'GLBL'), get_all_brand('CHN', 'CATE'))
+    db_tool.db_save('db_brand_chn', get_all_brand('CHN', 'CATE'))
+    # db_tool.db_brand_merge('db_brand_chn_merge', get_all_brand('CHN', 'GLBL'), get_all_brand('CHN', 'CATE'))
     pass
 
 

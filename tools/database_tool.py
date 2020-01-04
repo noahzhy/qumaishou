@@ -13,8 +13,8 @@ def db_save(db_name, df):
         return False
 
 
-def remove_repetition(path_dataframe):
-    return path_dataframe.drop_duplicates(subset=None, keep='first', inplace=False)
+def remove_repetition(df, key=None):
+    return df.drop_duplicates(subset=key, keep='first', inplace=False)
 
 
 def db_brand(db_name, df):
@@ -40,21 +40,24 @@ def db_product_img(df):
 
 def db_brand_merge(db_name, df1, df2):
     df = pd.merge(df1, df2, how='outer', on='brand_No')
-    df = df.drop_duplicates(subset='brand_No', keep='first', inplace=False)
+    df = remove_repetition(df, key='brand_No')
     db_save(db_name, df)
 
 
-def concat_db_brand_lang(original='ENG', other_lang='CHN'):
-    df1 = pd.read_csv(os.path.join(db_dir_path, 'db_brand_{}.csv'.format(original.lower())))
-    df2 = pd.read_csv(os.path.join(db_dir_path, 'db_brand_{}.csv'.format(other_lang.lower())))
-    df = pd.concat([df1, df2])
-    db_save('db_brand_concat', df)
+def intersection_d1_and_d2(db_name, df1, df2):
+    df = pd.merge(df1, df2, how='left', on='brand_name')
+    df = remove_repetition(df, 'brand_name')
+    df = df.loc[:, ['brand_No_x', 'brand_name', 'brand_url_x']]
+    db_save(db_name, df)
 
 
 def main():
     # db_brand_eng()
-    merge_db_brand_lang()
-    # concat_db_brand_lang()
+    # db_brand_merge()
+    d1 = pd.read_csv(os.path.join(db_dir_path, 'db_brand_eng.csv'))
+    d2 = pd.read_csv(os.path.join(db_dir_path, 'db_brand_chn.csv'))
+
+    intersection_d1_and_d2('final_brand', d1, d2)
     pass
 
 
