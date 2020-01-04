@@ -8,9 +8,19 @@ from bs4 import BeautifulSoup
 import tools.database_tool as db_tool
 
 
-def get_all_brand():
+def get_all_brand(flag='ENG', a_to_z_flag='CATE'):
     brand, brand_name, brand_url = [], [], []
-    domain = 'http://eng.lottedfs.com'
+    http = 'http://'
+
+    if (flag == 'CHN'):
+        domain = 'chn.lottedfs.cn'
+        db_name = 'db_brand_chn'
+    elif (flag == 'ENG'):
+        domain = 'eng.lottedfs.com'
+        db_name = 'db_brand_eng'
+    else:
+        domain = 'eng.lottedfs.com'
+        db_name = 'db_brand_eng'
 
     session = requests.Session()
     headers = {
@@ -18,7 +28,7 @@ def get_all_brand():
     }
 
     def get_special_brand():
-        url = 'http://eng.lottedfs.com/kr/display/brand'
+        url = 'http://{}/kr/display/brand'.format(domain)
         r = session.get(url=url, headers=headers)
         soup = BeautifulSoup(r.text, "html5lib")
         # for english version
@@ -27,9 +37,9 @@ def get_all_brand():
         return brandIndexList[0].select('dl > dd > ul > li > a')
         # print('Special Brand Total:', len(brand))
 
-    def get_brand_from_A_to_Z(flag='CATE'):
+    def get_brand_from_A_to_Z(flag=a_to_z_flag):
         # flag=GLBL 表示按照拼音序列，flag=ENG 表示按照英文排序，flag=CATE 表示按照类别排列
-        url = 'http://eng.lottedfs.com/kr/display/brand/getBrandMainBrandListAjax?flag={}'.format(flag)
+        url = 'http://{}/kr/display/brand/getBrandMainBrandListAjax?flag={}'.format(domain, flag)
         r = session.get(url=url, headers=headers)
         soup = BeautifulSoup(r.text, "lxml")
         brandIndexList = soup.find_all('body')
@@ -40,17 +50,17 @@ def get_all_brand():
     # print('Total:', len(brand))
     for i in brand:
         brand_name.append(i.get_text().strip())
-        if ('eng.lottedfs.com' in i['href'].strip()):
+        if (domain in i['href'].strip()):
             brand_url.append(i['href'].strip())
         else:
-            brand_url.append(domain + i['href'].strip())
+            brand_url.append(http + domain + i['href'].strip())
 
-    return brand_name, brand_url
+    return db_name, brand_name, brand_url
 
 
 def main():
-    brand_name, brand_url = get_all_brand()
-    db_tool.db_brand(brand_name, brand_url)
+    db_name, brand_name, brand_url = get_all_brand('CHN')
+    db_tool.db_brand(db_name, brand_name, brand_url)
     pass
 
 
