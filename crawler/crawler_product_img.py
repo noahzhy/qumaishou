@@ -115,4 +115,5 @@ if __name__ == "__main__":
     &cntPerPage=500
     &curPageNo=1
     &viewType01=0
-    &lodfsAdltYn=N'''
+    &lodfsAdltYn=N
+'''
