@@ -117,21 +117,8 @@ def get_product_list(dispShopNo):
 
 def main():
     # 输入英文品牌数据库的品牌编号
-    print(get_product_list(10000082))
+    print(get_product_list(10024315))
 
 
 if __name__ == "__main__":
     main()
-
-
-'''
-    http://eng.lottedfs.com/kr/display/brand/getLrnkBrandPrdListAjax?listType=img
-        &dispShopNo=10000545
-        &brndNo=10438
-        &prdSortStdCd=01
-        &catNo=
-        &cntPerPage=12
-        &curPageNo=1
-        &viewType01=1
-        &lodfsAdltYn=N
-'''

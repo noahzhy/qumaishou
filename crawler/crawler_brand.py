@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from requests.sessions import session
 
 import tools.database_tool as db_tool
+import pandas as pd
 
 
 def get_all_brand(flag='ENG', a_to_z_flag='CATE'):
@@ -57,15 +58,20 @@ def get_all_brand(flag='ENG', a_to_z_flag='CATE'):
             brand_url.append(http + domain + i['href'].strip())
         brand_no.append(i['href'].strip().split('=')[-1])
 
-    return db_name, brand_no, brand_name, brand_url
+    df = pd.DataFrame({
+        # 'index': indexList,
+        'brand_No': brand_no,
+        'brand_name': brand_name,
+        'brand_url': brand_url
+    })
+    return df
 
 
 def main():
     # 中文拼音排序 品牌 数据库
-    # db_name, brand_no, brand_name, brand_url = get_all_brand('CHN', 'GLBL')
     # 英文类别 品牌 数据库（常用）
-    db_name, brand_no, brand_name, brand_url = get_all_brand('ENG', 'CATE')
-    db_tool.db_brand(db_name, brand_no, brand_name, brand_url)
+    # get_all_brand('ENG', 'CATE')
+    db_tool.db_brand_merge('db_brand_chn_merge', get_all_brand('CHN', 'GLBL'), get_all_brand('CHN', 'CATE'))
     pass
 
 
