@@ -10,7 +10,7 @@ import tools.database_tool as db_tool
 
 
 def get_all_brand(flag='ENG', a_to_z_flag='CATE'):
-    brand, brand_name, brand_url = [], [], []
+    brand, brand_no, brand_name, brand_url = [], [], [], []
     http = 'http://'
 
     if (flag == 'CHN'):
@@ -55,16 +55,17 @@ def get_all_brand(flag='ENG', a_to_z_flag='CATE'):
             brand_url.append(i['href'].strip())
         else:
             brand_url.append(http + domain + i['href'].strip())
+        brand_no.append(i['href'].strip().split('=')[-1])
 
-    return db_name, brand_name, brand_url
+    return db_name, brand_no, brand_name, brand_url
 
 
 def main():
     # 中文拼音排序 品牌 数据库
-    # db_name, brand_name, brand_url = get_all_brand('CHN', 'GLBL')
+    # db_name, brand_no, brand_name, brand_url = get_all_brand('CHN', 'GLBL')
     # 英文类别 品牌 数据库（常用）
-    db_name, brand_name, brand_url = get_all_brand('ENG', 'CATE')
-    db_tool.db_brand(db_name, brand_name, brand_url)
+    db_name, brand_no, brand_name, brand_url = get_all_brand('ENG', 'CATE')
+    db_tool.db_brand(db_name, brand_no, brand_name, brand_url)
     pass
 
 

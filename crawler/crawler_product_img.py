@@ -1,12 +1,15 @@
 import sys
 # 导入同级目录下其他文件夹下的文件
 sys.path.append("./")
+import os
 import requests
 import pandas as pd
-import os
 from bs4 import BeautifulSoup
+from pypinyin import lazy_pinyin
+
 
 import tools.database_tool as db_tool
+import tools.data_check as data_check
 
 
 '''http://chn.lottedfs.cn/kr/display/brand/getLrnkBrandPrdListAjax?
@@ -27,9 +30,11 @@ headers = {
 
 def get_brnd_No(dispShopNo):
     url = 'http://eng.lottedfs.com/kr/display/brand?dispShopNo={}'.format(dispShopNo)
+    print(url)
     r = session.get(url=url, headers=headers)
     soup = BeautifulSoup(r.text, "html5lib")
     BrndNo = soup.find_all('input', id='thisBrndNo', type='hidden')
+    # print(BrndNo)
     return str(BrndNo[0]["value"])
 
 
@@ -55,9 +60,10 @@ def get_product_list(dispShopNo):
             listType=img
             &brndNo={}
             &prdSortStdCd=01
+            &catNo=
             &cntPerPage=500
             &curPageNo={}
-            &viewType01=0
+            &viewType01=1
             &lodfsAdltYn=N'''.format(brndNo, curPage).replace('\n', '').replace('\r', '').replace(' ', '')
         # print(url)
         r = session.get(url=url, headers=headers)
@@ -74,21 +80,30 @@ def get_product_list(dispShopNo):
 
         # <input type="hidden" class="prdNoHidden" value="20000558611">
         for i in productMd[0].select('li', class_='productMd'):
-
-            if (i.find_all('div', class_='flagArea')[0].select('em')):
-                tag = i.find_all('div', class_='flagArea')[0].select('em')[0].get_text()
-            else:
-                tag = ''
+            list_flag = i.find_all('div', class_='flagArea')[0].select('em')
+            tag = ''
+            if (list_flag):
+                for num in range(len(list_flag)):
+                    tag = tag + (list_flag[num].get_text()+' ')
             
+            if (len(tag)>0):
+                sorted_list = tag.strip().split()
+                sorted_list.sort(key=lambda char: lazy_pinyin(char)[0][0])
+                # print('sorted_lists', sorted_list)
+                tag_sort = ' '.join(sorted_list)
+
             prdNo = i.find_all('input', class_='prdNoHidden')[0]['value']
             brand = i.find_all('div', class_='brand')[0].select('strong')[0].get_text()
             product = i.find_all('div', class_='product')[0].get_text()
             img_url = i.find_all('div', class_='img')[0].select('img')[0]['src'].replace('/dims/resize/180x180','')
             us_price = i.find_all('div', class_='price')[0].select('span')[0].get_text()
+            
+            if data_check.is_chinese(us_price):
+                us_price = i.find_all('div', class_='discount')[0].select('strong')[0].get_text()
 
             data = {
-                'tag': tag,
-                'product_No': prdNo, 
+                'tag': tag_sort.strip(),
+                'product_No': prdNo,
                 'brand_name': brand,
                 'product_name': product.strip(),
                 'img_url': img_url,
@@ -101,19 +116,22 @@ def get_product_list(dispShopNo):
 
 
 def main():
-    print(get_product_list(10004945))
+    # 输入英文品牌数据库的品牌编号
+    print(get_product_list(10000082))
 
 
 if __name__ == "__main__":
     main()
 
 
-'''http://chn.lottedfs.cn/kr/display/brand/getLrnkBrandPrdListAjax?
-    listType=img
-    &brndNo=10073
-    &prdSortStdCd=01
-    &cntPerPage=500
-    &curPageNo=1
-    &viewType01=0
-    &lodfsAdltYn=N
+'''
+    http://eng.lottedfs.com/kr/display/brand/getLrnkBrandPrdListAjax?listType=img
+        &dispShopNo=10000545
+        &brndNo=10438
+        &prdSortStdCd=01
+        &catNo=
+        &cntPerPage=12
+        &curPageNo=1
+        &viewType01=1
+        &lodfsAdltYn=N
 '''
