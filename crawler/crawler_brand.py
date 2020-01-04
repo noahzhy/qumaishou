@@ -4,9 +4,9 @@ sys.path.append("./")
 
 import requests
 from bs4 import BeautifulSoup
+from requests.sessions import session
 
 import tools.database_tool as db_tool
-from requests.sessions import session
 
 
 def get_all_brand(flag='ENG', a_to_z_flag='CATE'):
