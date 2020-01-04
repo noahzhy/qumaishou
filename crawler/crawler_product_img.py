@@ -30,12 +30,19 @@ def get_brnd_No(dispShopNo):
     r = session.get(url=url, headers=headers)
     soup = BeautifulSoup(r.text, "html5lib")
     BrndNo = soup.find_all('input', id='thisBrndNo', type='hidden')
-    # print(BrndNo[0]["value"])
     return str(BrndNo[0]["value"])
 
 
 def get_product_list(dispShopNo):
-    df = pd.DataFrame(columns=['product_No', 'brand_name', 'product_name', 'img_url', 'us_price'])
+    # data = {
+    #     'tag': tag,
+    #     'product_No': prdNo, 
+    #     'brand_name': brand,
+    #     'product_name': product.strip(),
+    #     'img_url': img_url,
+    #     'us_price': us_price
+    # }
+    df = pd.DataFrame(columns=['tag', 'product_No', 'us_price', 'brand_name', 'product_name', 'img_url'])
     # 通过店铺号来获取品牌号
     brndNo = get_brnd_No(dispShopNo)
     print('Test>>>', brndNo)
@@ -58,9 +65,7 @@ def get_product_list(dispShopNo):
         # <div class="paging ">
         if not FLAG_GET_PAGES:
             pages_tag = soup.find_all('div', class_='paging')[0].select('a')[-1]['href']
-            # <a href="javascript:fn_movePage(31);" class="last">Last</a>
             pages = int(''.join(list(filter(str.isdigit, pages_tag))))
-            # print(pages)
             print('pages:', pages)
             [page_list.append(i) for i in range(2, pages+1)]
             FLAG_GET_PAGES = True
@@ -69,16 +74,23 @@ def get_product_list(dispShopNo):
 
         # <input type="hidden" class="prdNoHidden" value="20000558611">
         for i in productMd[0].select('li', class_='productMd'):
+
+            if (i.find_all('div', class_='flagArea')[0].select('em')):
+                tag = i.find_all('div', class_='flagArea')[0].select('em')[0].get_text()
+            else:
+                tag = ''
+            
             prdNo = i.find_all('input', class_='prdNoHidden')[0]['value']
             brand = i.find_all('div', class_='brand')[0].select('strong')[0].get_text()
             product = i.find_all('div', class_='product')[0].get_text()
             img_url = i.find_all('div', class_='img')[0].select('img')[0]['src'].replace('/dims/resize/180x180','')
-            us_price = i.find_all('div', class_='discount')[0].select('strong')[0].get_text()
+            us_price = i.find_all('div', class_='price')[0].select('span')[0].get_text()
 
             data = {
+                'tag': tag,
                 'product_No': prdNo, 
                 'brand_name': brand,
-                'product_name': product,
+                'product_name': product.strip(),
                 'img_url': img_url,
                 'us_price': us_price
             }
@@ -89,7 +101,7 @@ def get_product_list(dispShopNo):
 
 
 def main():
-    print(get_product_list(10011012))
+    print(get_product_list(10004945))
 
 
 if __name__ == "__main__":

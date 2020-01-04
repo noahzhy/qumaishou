@@ -36,6 +36,7 @@ def db_product_img(df):
     #     'us_price': us_price
     # })
     dataframe = pd.DataFrame(df)
+    print('db_brand:', dataframe.shape[0])
     # index 表示是否显示行名，default=True
     if dataframe.to_csv(os.path.join(db_dir_path, 'db_product_img.csv'), index=False, sep=','):
         return True
