@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 
 import tools.database_tool as db_tool
+from requests.sessions import session
 
 
 def get_all_brand(flag='ENG', a_to_z_flag='CATE'):
@@ -32,7 +33,7 @@ def get_all_brand(flag='ENG', a_to_z_flag='CATE'):
         r = session.get(url=url, headers=headers)
         soup = BeautifulSoup(r.text, "html5lib")
         # for english version
-        brandIndexList = soup.find_all('div', id='brandIndexList_ENG')
+        brandIndexList = soup.find_all('div', id='brandIndexList_{}'.format(a_to_z_flag))
         # brandIndexList = soup.find_all('div', id='brandIndexList_GLBL')
         return brandIndexList[0].select('dl > dd > ul > li > a')
         # print('Special Brand Total:', len(brand))
@@ -59,7 +60,10 @@ def get_all_brand(flag='ENG', a_to_z_flag='CATE'):
 
 
 def main():
-    db_name, brand_name, brand_url = get_all_brand('CHN')
+    # 中文拼音排序 品牌 数据库
+    # db_name, brand_name, brand_url = get_all_brand('CHN', 'GLBL')
+    # 英文类别 品牌 数据库
+    db_name, brand_name, brand_url = get_all_brand('ENG', 'CATE')
     db_tool.db_brand(db_name, brand_name, brand_url)
     pass
 
