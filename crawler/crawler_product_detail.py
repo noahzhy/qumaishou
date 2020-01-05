@@ -28,7 +28,7 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36',
 }
 
-def get_brnd_No(dispShopNo):
+def get_product_detail(dispShopNo):
     url = 'http://eng.lottedfs.com/kr/display/brand?dispShopNo={}'.format(dispShopNo)
     print(url)
     r = session.get(url=url, headers=headers)
@@ -111,16 +111,16 @@ def get_brnd_No(dispShopNo):
                 df = df.append(data, ignore_index=True)
         
         # print(df.size())
-        db_tool.db_product_img(df)
-        return True
+        db_tool.db_brand_product(dispShopNo, df)
+        return True, df.shape[0]
 
     except Exception as e:
         print(e)
-        return False
+        return False, 0
 
 def main():
     # 输入英文品牌数据库的品牌编号
-    print(get_brnd_No(10011474))
+    print(get_product_detail(10011474))
 
 
 if __name__ == "__main__":

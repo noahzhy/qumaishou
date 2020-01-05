@@ -27,7 +27,7 @@ def db_brand(db_name, df):
     return df
 
 
-def db_product_img(df):
+def db_brand_product(db_name, df):
     # dataframe = pd.DataFrame({
     #     'product_No': prdNo,
     #     'brand_name': brand,
@@ -37,7 +37,8 @@ def db_product_img(df):
     # })
     dataframe = pd.DataFrame(df)
     print('db_brand:', dataframe.shape[0])
-    db_save('db_product_img', df)
+    db_save('brand_product_{}'.format(db_name), df)
+    return df
 
 
 def db_add_mode(db_name, df):
