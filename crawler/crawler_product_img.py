@@ -35,92 +35,90 @@ def get_brnd_No(dispShopNo):
     soup = BeautifulSoup(r.text, "html5lib")
     BrndNo = soup.find_all('input', id='thisBrndNo', type='hidden')
     # print(BrndNo)
-    return str(BrndNo[0]["value"])
+    try:
+        # data = {
+        #     'tag': tag,
+        #     'product_No': prdNo, 
+        #     'brand_name': brand,
+        #     'product_name': product.strip(),
+        #     'img_url': img_url,
+        #     'us_price': us_price
+        # }
+        df = pd.DataFrame(columns=['tag', 'brand_No', 'product_No', 'us_price', 'brand_name_chn', 'brand_name_eng', 'product_name', 'img_url'])
+        # 通过店铺号来获取品牌号
+        brndNo = BrndNo[0]['value']
+        print('brndNo:', brndNo)
+        # 默认从第一页开始，使用动态的 page_list 来控制循环
+        page_list = [1]
+        FLAG_GET_PAGES = False
 
+        for curPage in page_list:
+            url = '''http://chn.lottedfs.cn/kr/display/brand/getLrnkBrandPrdListAjax?
+                listType=img
+                &brndNo={}
+                &prdSortStdCd=01
+                &catNo=
+                &cntPerPage=500
+                &curPageNo={}
+                &viewType01=1
+                &lodfsAdltYn=N'''.format(brndNo, curPage).replace('\n', '').replace('\r', '').replace(' ', '')
+            # print(url)
+            r = session.get(url=url, headers=headers)
+            soup = BeautifulSoup(r.text, "lxml")
+            # <div class="paging ">
+            if not FLAG_GET_PAGES:
+                pages_tag = soup.find_all('div', class_='paging')[0].select('a')[-1]['href']
+                pages = data_check.only_num(pages_tag)
+                print('pages:', pages)
+                [page_list.append(i) for i in range(2, pages+1)]
+                FLAG_GET_PAGES = True
 
-def get_product_list(dispShopNo):
-    # data = {
-    #     'tag': tag,
-    #     'product_No': prdNo, 
-    #     'brand_name': brand,
-    #     'product_name': product.strip(),
-    #     'img_url': img_url,
-    #     'us_price': us_price
-    # }
-    df = pd.DataFrame(columns=['tag', 'brand_No', 'product_No', 'us_price', 'brand_name_chn', 'brand_name_eng', 'product_name', 'img_url'])
-    # 通过店铺号来获取品牌号
-    brndNo = get_brnd_No(dispShopNo)
-    print('Test>>>', brndNo)
-    # 默认从第一页开始，使用动态的 page_list 来控制循环
-    page_list = [1]
-    FLAG_GET_PAGES = False
+            productMd = soup.find_all('ul', class_='listUl')
+            # <input type="hidden" class="prdNoHidden" value="20000558611">
+            for i in productMd[0].select('li', class_='productMd'):
+                list_flag = i.find_all('div', class_='flagArea')[0].select('em')
+                _tag = ''
+                if (list_flag):
+                    for num in range(len(list_flag)):
+                        _tag = _tag + (list_flag[num].get_text()+' ')
+                
+                if (len(_tag)>0):
+                    # 按拼音排序
+                    sorted_list = _tag.strip().split()
+                    sorted_list.sort(key=lambda char: lazy_pinyin(char)[0][0])
+                    tag_sort = ' '.join(sorted_list)
 
-    for curPage in page_list:
-        url = '''http://chn.lottedfs.cn/kr/display/brand/getLrnkBrandPrdListAjax?
-            listType=img
-            &brndNo={}
-            &prdSortStdCd=01
-            &catNo=
-            &cntPerPage=500
-            &curPageNo={}
-            &viewType01=1
-            &lodfsAdltYn=N'''.format(brndNo, curPage).replace('\n', '').replace('\r', '').replace(' ', '')
-        # print(url)
-        r = session.get(url=url, headers=headers)
-        soup = BeautifulSoup(r.text, "lxml")
-        # <div class="paging ">
-        if not FLAG_GET_PAGES:
-            pages_tag = soup.find_all('div', class_='paging')[0].select('a')[-1]['href']
-            pages = int(''.join(list(filter(str.isdigit, pages_tag))))
-            print('pages:', pages)
-            [page_list.append(i) for i in range(2, pages+1)]
-            FLAG_GET_PAGES = True
+                prdNo = i.find_all('input', class_='prdNoHidden')[0]['value']
+                brand_chn = i.find_all('div', class_='brand')[0].select('strong')[0].get_text()
+                brand_eng = i.find_all('div', class_='brand')[0].contents[-1].strip()
+                product = i.find_all('div', class_='product')[0].get_text()
+                img_url = i.find_all('div', class_='img')[0].select('img')[0]['src'].replace('/dims/resize/180x180','')
+                us_price = i.find_all('div', class_='price')[0].select('span')[0].get_text()
+                
+                if data_check.is_chinese(us_price):
+                    us_price = i.find_all('div', class_='discount')[0].select('strong')[0].get_text()
 
-        productMd = soup.find_all('ul', class_='listUl')
+                data = {
+                    'tag': tag_sort.strip(),
+                    'brand_No': brndNo,
+                    'product_No': prdNo,
+                    'brand_name_chn': brand_chn,
+                    'brand_name_eng': brand_eng,                
+                    'product_name': product.strip(),
+                    'img_url': img_url,
+                    'us_price': us_price
+                }
+                df = df.append(data, ignore_index=True)
+        
+        # print(df.size())
+        db_tool.db_product_img(df)
 
-        # <input type="hidden" class="prdNoHidden" value="20000558611">
-        for i in productMd[0].select('li', class_='productMd'):
-            list_flag = i.find_all('div', class_='flagArea')[0].select('em')
-            tag = ''
-            if (list_flag):
-                for num in range(len(list_flag)):
-                    tag = tag + (list_flag[num].get_text()+' ')
-            
-            if (len(tag)>0):
-                sorted_list = tag.strip().split()
-                sorted_list.sort(key=lambda char: lazy_pinyin(char)[0][0])
-                # print('sorted_lists', sorted_list)
-                tag_sort = ' '.join(sorted_list)
-
-            prdNo = i.find_all('input', class_='prdNoHidden')[0]['value']
-            brand_chn = i.find_all('div', class_='brand')[0].select('strong')[0].get_text()
-            brand_eng = i.find_all('div', class_='brand')[0].contents[-1].strip()
-            product = i.find_all('div', class_='product')[0].get_text()
-            img_url = i.find_all('div', class_='img')[0].select('img')[0]['src'].replace('/dims/resize/180x180','')
-            us_price = i.find_all('div', class_='price')[0].select('span')[0].get_text()
-            
-            if data_check.is_chinese(us_price):
-                us_price = i.find_all('div', class_='discount')[0].select('strong')[0].get_text()
-
-            data = {
-                'tag': tag_sort.strip(),
-                'brand_No': brndNo,
-                'product_No': prdNo,
-                'brand_name_chn': brand_chn,
-                'brand_name_eng': brand_eng,                
-                'product_name': product.strip(),
-                'img_url': img_url,
-                'us_price': us_price
-            }
-            df = df.append(data, ignore_index=True)
-    
-    # print(df.size())
-    db_tool.db_product_img(df)
-
+    except Exception as e:
+        print(e)
 
 def main():
     # 输入英文品牌数据库的品牌编号
-    print(get_product_list(10006001))
+    print(get_brnd_No(10011474))
 
 
 if __name__ == "__main__":
@@ -139,6 +137,15 @@ if __name__ == "__main__":
 '''
 
 '''
+    returnFilePath: display/common/brand/joMalone/fragments/
+    returnFileName: joMalonePrdList
+    thisDispShopNo: 10018131
+    prdSortStdCd: 01
+    cntPerPage: 9
+    curPageNo: 1
+'''
+
+'''
     returnFilePath: display/common/brand/esteeLauder/fragments/
     returnFileName: esteeLauderPrdList
     thisDispShopNo: 10021874
@@ -154,4 +161,22 @@ if __name__ == "__main__":
     prdSortStdCd: 01
     cntPerPage: 12
     curPageNo: 1
+'''
+
+'''
+    香奈儿 特殊规则
+    http://chn.lottedfs.cn/kr/display/brand/brandGwanPrdList?
+        returnFilePath=display%2Fcommon%2Fbrand%2Fchanel%2Ffragments%2F
+        &returnFileName=chanelPrdList
+        &thisDispShopNo=1230790 // 重点
+        &prdSortStdCd=01
+        &cntPerPage=20
+        &curPageNo=1
+    http://chn.lottedfs.cn/kr/display/brand/brandGwanPrdList?
+        returnFilePath=display%2Fcommon%2Fbrand%2Fchanel%2Ffragments%2F
+        &returnFileName=chanelPrdList
+        &thisDispShopNo=1230837 // 重点
+        &prdSortStdCd=01
+        &cntPerPage=20
+        &curPageNo=1
 '''
