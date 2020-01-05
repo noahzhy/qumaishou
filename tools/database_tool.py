@@ -1,5 +1,7 @@
 import os
 import pandas as pd
+import sys
+import glob
 
 
 db_dir_path = 'database'
@@ -38,26 +40,26 @@ def db_product_img(df):
     db_save('db_product_img', df)
 
 
-def db_brand_merge(db_name, df1, df2):
-    df = pd.merge(df1, df2, how='outer', on='brand_No')
-    df = remove_repetition(df, key='brand_No')
-    db_save(db_name, df)
+def db_add_mode(db_name, df):
+    pass
 
 
-def intersection_d1_and_d2(db_name, df1, df2):
-    df = pd.merge(df1, df2, how='left', on='brand_name')
+def intersection_db_brand():
+    '''合并品牌数据库，最终英文版的'''
+    d1 = pd.read_csv(os.path.join(db_dir_path, 'db_brand_eng.csv'))
+    d2 = pd.read_csv(os.path.join(db_dir_path, 'db_brand_chn.csv'))
+    df = pd.merge(d1, d2, how='left', on='brand_name')
     df = remove_repetition(df, 'brand_name')
     df = df.loc[:, ['brand_No_x', 'brand_name', 'brand_url_x']]
-    db_save(db_name, df)
+    db_save('db_brand_final', df)
+    print('df_merged:', df.shape[0])
+    return df
 
 
 def main():
     # db_brand_eng()
     # db_brand_merge()
-    d1 = pd.read_csv(os.path.join(db_dir_path, 'db_brand_eng.csv'))
-    d2 = pd.read_csv(os.path.join(db_dir_path, 'db_brand_chn.csv'))
-
-    intersection_d1_and_d2('final_brand', d1, d2)
+    # intersection_db_brand()
     pass
 
 

@@ -26,6 +26,6 @@ def only_num(string):
 if __name__ == "__main__":
     s1 = '72CPB2911-50L-FREE [FW_BEANIE] F-BASIC LOGO BASIC BEANIE NEW YORK YANKEES 帽子'
     print(is_chinese('sdsds登录后可查看折扣价'), is_chinese('$306'))
-    print(only_eng_and_num(s1))
+    # print(only_eng_and_num(s1))
     print(only_chinese(s1))
     pass

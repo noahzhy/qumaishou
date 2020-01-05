@@ -112,9 +112,11 @@ def get_brnd_No(dispShopNo):
         
         # print(df.size())
         db_tool.db_product_img(df)
+        return True
 
     except Exception as e:
         print(e)
+        return False
 
 def main():
     # 输入英文品牌数据库的品牌编号
