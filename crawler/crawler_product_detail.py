@@ -80,13 +80,17 @@ def get_product_detail(dispShopNo):
                 _tag = ''
                 if (list_flag):
                     for num in range(len(list_flag)):
-                        _tag = _tag + (list_flag[num].get_text()+' ')
+                        # 忽略 3小时前 这个标签
+                        if not (list_flag[num].get_text() == '3小时前'):
+                            _tag = _tag + (list_flag[num].get_text()+' ')
                 
                 if (len(_tag)>0):
                     # 按拼音排序
                     sorted_list = _tag.strip().split()
                     sorted_list.sort(key=lambda char: lazy_pinyin(char)[0][0])
                     tag_sort = ' '.join(sorted_list)
+                else:
+                    tag_sort = ''
 
                 prdNo = i.find_all('input', class_='prdNoHidden')[0]['value']
                 brand_chn = i.find_all('div', class_='brand')[0].select('strong')[0].get_text()
@@ -112,11 +116,11 @@ def get_product_detail(dispShopNo):
         
         # print(df.size())
         db_tool.db_brand_product(dispShopNo, df)
-        return True, df.shape[0]
+        return True, df.shape[0], brndNo
 
     except Exception as e:
         print(e)
-        return False, 0
+        return False, 0, brndNo
 
 def main():
     # 输入英文品牌数据库的品牌编号

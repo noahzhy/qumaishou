@@ -60,7 +60,7 @@ def get_all_brand(flag='ENG', a_to_z_flag='CATE'):
 
     df = pd.DataFrame({
         # 'index': indexList,
-        'brand_No': brand_no,
+        'dispShopNo': brand_no,
         'brand_name': brand_name,
         'brand_url': brand_url
     })
@@ -71,7 +71,7 @@ def main():
     # 中文拼音排序 品牌 数据库
     # 英文类别 品牌 数据库（常用）
     db_tool.db_save('db_brand_chn', get_all_brand('CHN', 'CATE'))
-    # db_tool.db_brand_merge('db_brand_chn_merge', get_all_brand('CHN', 'GLBL'), get_all_brand('CHN', 'CATE'))
+    db_tool.db_save('db_brand_eng', get_all_brand())
     pass
 
 
