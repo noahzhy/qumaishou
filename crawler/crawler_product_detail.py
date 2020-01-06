@@ -120,7 +120,7 @@ def get_product_detail(dispShopNo):
 
     except Exception as e:
         print(e)
-        return False, 0, brndNo
+        return False, 0, 0
 
 def main():
     # 输入英文品牌数据库的品牌编号

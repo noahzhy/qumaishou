@@ -40,7 +40,7 @@ def get_product_info_by_brand_list(TEST_FLAG=True, csv_file='database/db_brand_f
             if count>2 :
                 break
         else:
-            time.sleep(30)
+            time.sleep(10)
     db_tool.db_save('db_brand_list_check', result_df)
     
         
