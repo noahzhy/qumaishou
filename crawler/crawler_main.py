@@ -11,9 +11,9 @@ import crawler.crawler_total_product as ctp
 
 
 def main():
-    cb.get_all_brand('CHN')
-    cb.get_all_brand('ENG')
-    dt.intersection_db_brand()
+    # cb.get_all_brand('CHN')
+    # cb.get_all_brand('ENG')
+    # dt.intersection_db_brand()
     ctp.get_product_info_by_brand_list(False)
     pass
 
