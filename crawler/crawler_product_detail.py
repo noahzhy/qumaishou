@@ -34,7 +34,8 @@ def get_product_detail(dispShopNo):
     r = session.get(url=url, headers=headers)
     soup = BeautifulSoup(r.text, "html5lib")
     BrndNo = soup.find_all('input', id='thisBrndNo', type='hidden')
-    # print(BrndNo)
+    brdWrap = soup.find_all('div', class_='brdWrap')
+    print(brdWrap)
     try:
         # data = {
         #     'tag': tag,
@@ -124,7 +125,7 @@ def get_product_detail(dispShopNo):
 
 def main():
     # 输入英文品牌数据库的品牌编号
-    print(get_product_detail(10011474))
+    print(get_product_detail(10018108))
 
 
 if __name__ == "__main__":

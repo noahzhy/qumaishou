@@ -11,22 +11,31 @@ import time
 
 
 count = 0
+fail_counter = 0
+p
 
 def get_product_info_by_brand_list(TEST_FLAG=True, csv_file='database/db_brand_final.csv'):
-    os.remove('database/db_brand_list_check.csv')
     global count
+    global fail_counter
+
+    os.remove('database/db_brand_list_check.csv')
     df = pd.read_csv(csv_file)
     result_df = pd.DataFrame(columns=['dispShopNo', 'brand_No', 'brand_name', 'total', 'status'])
     db_tool.db_save('db_brand_list_check', result_df)
     print('db_brand:', df.shape[0])
     for i in range(df.shape[0]):
-        brand_name = df.loc[i]['brand_name']
         dispShopNo = df.loc[i]['dispShopNo_x']
+        if (os.path.exists('database/brand_product_{}.csv'.format(dispShopNo))):
+            print('file has existed')
+            continue
+
+        brand_name = df.loc[i]['brand_name']
         status_df, total_num_df, brndNo = cpd.get_product_detail(dispShopNo)
         if (status_df):
             status = 'o'
         else:
             status = 'x'
+            fail_counter += 1
         
         data = {
             'dispShopNo': dispShopNo,
@@ -43,13 +52,14 @@ def get_product_info_by_brand_list(TEST_FLAG=True, csv_file='database/db_brand_f
             if count>2 :
                 break
         else:
-            time.sleep(10)
+            # time.sleep(10)
+            pass
     
     # db_tool.db_save('db_brand_list_check', result_df)
     
         
 def main():
-    get_product_info_by_brand_list()
+    get_product_info_by_brand_list(False)
 
 
 if __name__ == "__main__":
