@@ -7,11 +7,12 @@ sys.path.append("./")
 import crawler.crawler_product_detail as cpd
 import tools.data_check as data_check
 import tools.database_tool as db_tool
+import time
 
 
 count = 0
 
-def get_brand_list(csv_file='database/db_brand_final.csv'):
+def get_product_info_by_brand_list(TEST_FLAG=True, csv_file='database/db_brand_final.csv'):
     global count
     df = pd.read_csv(csv_file)
     result_df = pd.DataFrame(columns=['dispShopNo', 'brand_No', 'brand_name', 'total', 'status'])
@@ -34,14 +35,17 @@ def get_brand_list(csv_file='database/db_brand_final.csv'):
         }
         result_df = result_df.append(data, ignore_index=True)
         # 测试用
-        count = count + 1
-        if count>3 :
-            break
-    db_tool.db_brand_product('db_brand_list_check', result_df)
+        if TEST_FLAG:
+            count = count + 1
+            if count>2 :
+                break
+        else:
+            time.sleep(30)
+    db_tool.db_save('db_brand_list_check', result_df)
     
         
 def main():
-    get_brand_list()
+    get_product_info_by_brand_list()
 
 
 if __name__ == "__main__":

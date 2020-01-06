@@ -14,7 +14,7 @@ def main():
     cb.get_all_brand('CHN')
     cb.get_all_brand('ENG')
     dt.intersection_db_brand()
-    ctp.get_brand_list()
+    ctp.get_product_info_by_brand_list(False)
     pass
 
 
