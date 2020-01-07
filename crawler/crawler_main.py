@@ -25,7 +25,6 @@ def main(rows):
     # dt.intersection_db_brand()
     if not ctp.get_product_info(rows, proxies):
         fail_counter += 1
-        pass
 
     if fail_counter >= 2:
         refresh_ip()

@@ -34,7 +34,7 @@ def get_product_info(row=0, proxies=proxies_api.get_proxies()):
             'total': total_num_df, 
             'status': 'o'
         }
-        result_df = result_df.append(data, ignore_index=True)
+        # result_df = result_df.append(data, ignore_index=True)
         pd.DataFrame(data, index=[0]).to_csv('database/db_brand_list_check.csv', mode='a', header=False, index=False)
         print(dispShopNo, 'file has existed')
         return True
@@ -57,7 +57,7 @@ def get_product_info(row=0, proxies=proxies_api.get_proxies()):
                 'total': total_num_df, 
                 'status': status
             }
-            result_df = result_df.append(data, ignore_index=True)
+            # result_df = result_df.append(data, ignore_index=True)
             pd.DataFrame(data, index=[0]).to_csv('database/db_brand_list_check.csv', mode='a', header=False, index=False)
             return True
 
