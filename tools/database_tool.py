@@ -31,16 +31,9 @@ def db_brand(db_name, df):
 
 
 def db_brand_product(db_name, df):
-    # dataframe = pd.DataFrame({
-    #     'product_No': prdNo,
-    #     'brand_name': brand,
-    #     'product_name': product,
-    #     'img_url': img_url,
-    #     'us_price': us_price
-    # })
     dataframe = pd.DataFrame(df)
     print('brand product:', dataframe.shape[0])
-    db_save('brand_product_{}'.format(db_name), df)
+    db_save('brand_product/brand_product_{}'.format(db_name), df)
     return df
 
 

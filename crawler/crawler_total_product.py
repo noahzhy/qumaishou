@@ -21,8 +21,8 @@ def get_product_info(row=0, proxies=proxies_api.get_proxies()):
 
     dispShopNo = df.loc[row]['dispShopNo_x']
 
-    if (os.path.exists('database/brand_product_{}.csv'.format(dispShopNo))):
-        has_existed_df = pd.read_csv('database/brand_product_{}.csv'.format(dispShopNo))
+    if (os.path.exists('database/brand_product/brand_product_{}.csv'.format(dispShopNo))):
+        has_existed_df = pd.read_csv('database/brand_product/brand_product_{}.csv'.format(dispShopNo))
         brand_name = has_existed_df.loc[0]['brand_name_eng']
         brndNo = has_existed_df.loc[0]['brand_No']
         total_num_df = has_existed_df.shape[0]

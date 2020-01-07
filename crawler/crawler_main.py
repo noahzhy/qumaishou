@@ -41,8 +41,8 @@ if __name__ == '__main__':
     # cb.get_all_brand('ENG')
     # dt.intersection_db_brand()
 
-    # pool = multiprocessing.Pool(multiprocessing.cpu_count())
-    pool = multiprocessing.Pool(1)
+    pool = multiprocessing.Pool(multiprocessing.cpu_count())
+    # pool = multiprocessing.Pool(1)
     rows = []
 
     try: 
