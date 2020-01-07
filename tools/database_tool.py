@@ -41,7 +41,7 @@ def merge_brand_product_in_one():
     # print(os.getcwd())
     frames = []
     # print(glob.glob(r'database/brand_product_*.csv'))
-    for i in glob.glob('database/brand_product_*.csv'):
+    for i in glob.glob('database/brand_product/brand_product_*.csv'):
         df = pd.read_csv(i)
         frames.append(df)
 
