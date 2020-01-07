@@ -32,7 +32,7 @@ def get_product_detail(dispShopNo, proxies):
     headers = {'User-Agent': ua.random}
     url = 'http://eng.lottedfs.com/kr/display/brand?dispShopNo={}'.format(dispShopNo)
     print(url)
-    r = session.get(url=url, headers=headers, proxies=proxies, timeout=20)
+    r = session.get(url=url, headers=headers, proxies=proxies, timeout=5)
     soup = BeautifulSoup(r.text, "html5lib")
     BrndNo = soup.find_all('input', id='thisBrndNo', type='hidden')
     # brdWrap = soup.find_all('div', class_='brdWrap')
