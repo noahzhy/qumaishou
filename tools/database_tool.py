@@ -2,6 +2,8 @@ import os
 import pandas as pd
 import sys
 import glob
+# 导入同级目录下其他文件夹下的文件
+sys.path.append("./")
 
 
 db_dir_path = 'database'
@@ -42,7 +44,16 @@ def db_brand_product(db_name, df):
     return df
 
 
-def db_add_mode(db_name, df):
+def merge_brand_product_in_one():
+    # print(os.getcwd())
+    frames = []
+    # print(glob.glob(r'database/brand_product_*.csv'))
+    for i in glob.glob('database/brand_product_*.csv'):
+        df = pd.read_csv(i)
+        frames.append(df)
+
+    result = pd.concat(frames)
+    db_save('db_total_product', result)
     pass
 
 
@@ -61,7 +72,9 @@ def intersection_db_brand():
 def main():
     # db_brand_eng()
     # db_brand_merge()
-    intersection_db_brand()
+    # intersection_db_brand()
+    merge_brand_product_in_one()
+
     pass
 
 
