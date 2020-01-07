@@ -1,5 +1,6 @@
 import os
 import sys
+import random
 # 导入同级目录下其他文件夹下的文件
 sys.path.append("./")
 
@@ -7,6 +8,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from pypinyin import lazy_pinyin
+from fake_useragent import UserAgent
 
 import tools.data_check as data_check
 import tools.database_tool as db_tool
@@ -23,19 +25,18 @@ import tools.database_tool as db_tool
     &lodfsAdltYn=N
 '''
 
-session = requests.Session()
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36',
-}
+ua = UserAgent()
 
-def get_product_detail(dispShopNo):
+def get_product_detail(dispShopNo, proxies):
+    session = requests.Session()
+    headers = {'User-Agent': ua.random}
     url = 'http://eng.lottedfs.com/kr/display/brand?dispShopNo={}'.format(dispShopNo)
     print(url)
-    r = session.get(url=url, headers=headers)
+    r = session.get(url=url, headers=headers, proxies=proxies, timeout=20)
     soup = BeautifulSoup(r.text, "html5lib")
     BrndNo = soup.find_all('input', id='thisBrndNo', type='hidden')
-    brdWrap = soup.find_all('div', class_='brdWrap')
-    print(brdWrap)
+    # brdWrap = soup.find_all('div', class_='brdWrap')
+    # print(brdWrap)
     try:
         # data = {
         #     'tag': tag,
@@ -64,7 +65,7 @@ def get_product_detail(dispShopNo):
                 &viewType01=1
                 &lodfsAdltYn=N'''.format(brndNo, curPage).replace('\n', '').replace('\r', '').replace(' ', '')
             # print(url)
-            r = session.get(url=url, headers=headers)
+            r = session.get(url=url, headers=headers, proxies=proxies, timeout=20)
             soup = BeautifulSoup(r.text, "lxml")
             # <div class="paging ">
             if not FLAG_GET_PAGES:
