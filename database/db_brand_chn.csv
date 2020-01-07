@@ -62,7 +62,6 @@ dispShopNo,brand_name,brand_url
 10009124,BLACKMORES,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10009124
 10013706,BLAK,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10013706
 10016818,BLANC DOUX Beauty,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10016818
-10017601,BLOOMING CELL Beauty,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10017601
 10019740,BLUEDOG,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10019740
 10024540,BOBBI BROWN,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10024540
 10023476,BODYLUV,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10023476
@@ -131,7 +130,6 @@ dispShopNo,brand_name,brand_url
 10001607,DAVIDOFF,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10001607
 10011166,DEAR DAHLIA Beauty,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10011166
 10022271,DEAR LAUREN,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10022271
-10017611,DEARANCHY Beauty,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10017611
 10022772,DECORTE,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10022772
 10001631,DEESSE,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10001631
 10026424,DEMEDICOTEM Beauty,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10026424
@@ -189,6 +187,7 @@ dispShopNo,brand_name,brand_url
 10020151,FARMACY,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10020151
 10012792,FAU,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10012792
 10024229,FENTY BEAUTY,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10024229
+10027464,FERMIER PAPA Beauty,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10027464
 10000460,FERRAGAMO  Fragrances,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10000460
 10017148,FFLOW Beauty,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10017148
 10025525,FILLIMILLI Beauty,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10025525
@@ -455,6 +454,7 @@ dispShopNo,brand_name,brand_url
 10024291,TIRTIR Beauty,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10024291
 10005271,TONYMOLY,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10005271
 10005279,TOOCOOLFORSCHOOL,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10005279
+10027553,TORRIDEN,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10027553
 10021468,TOUCH IN SOL Beauty,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10021468
 10007117,TRIA,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10007117
 10007125,TRILOGY,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10007125
@@ -583,7 +583,7 @@ dispShopNo,brand_name,brand_url
 10006745,COMVITA,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10006745
 10008879,COOL SSHA,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10008879
 10001495,CP-1,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10001495
-10027293,CURLYSHYLL,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10027293
+10027293,CURLYSHYLL PROFESSIONAL,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10027293
 10001639,DENTISTE,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10001639
 10008610,DKNY  Fragrances,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10008610
 10000203,DOLCE & GABBANA Fragrances,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10000203
@@ -740,6 +740,7 @@ dispShopNo,brand_name,brand_url
 10011518,MLB KIDS,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10011518
 10008730,MOGONE,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10008730
 10000410,MONTBLANC Fashion,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10000410
+10026976,MSGM,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10026976
 10012857,MUTEMUSE,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10012857
 10026499,NERDY,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10026499
 10026022,NEWERA Fashion,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10026022
@@ -1041,7 +1042,6 @@ dispShopNo,brand_name,brand_url
 10009374,MOOSE KNUCKLES,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10009374
 10025222,MOTIVE STREET Fashion,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10025222
 10026895,MOVEWARM,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10026895
-10026976,MSGM,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10026976
 10018551,MULAWEAR,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10018551
 10004599,Marie Claire,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10004599
 10024539,NAIN Fashion,http://chn.lottedfs.cn/kr/display/brand?dispShopNo=10024539

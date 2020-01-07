@@ -20,9 +20,7 @@ proxies = {'http': proxies_api.get_proxies()}
 
 def main(rows):
     global fail_counter
-    cb.get_all_brand('CHN')
-    cb.get_all_brand('ENG')
-    dt.intersection_db_brand()
+
     if not ctp.get_product_info(rows, proxies):
         fail_counter += 1
 
@@ -37,6 +35,10 @@ def refresh_ip():
 
 
 if __name__ == '__main__':
+
+    # cb.get_all_brand('CHN')
+    # cb.get_all_brand('ENG')
+    # dt.intersection_db_brand()
 
     pool = multiprocessing.Pool(multiprocessing.cpu_count())
     rows = []
