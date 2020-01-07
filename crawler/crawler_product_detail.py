@@ -126,7 +126,7 @@ def get_product_detail(dispShopNo, proxies):
 
 def main():
     # 输入英文品牌数据库的品牌编号
-    print(get_product_detail(10018108))
+    print(get_product_detail(10002537, proxies={}))
 
 
 if __name__ == "__main__":
