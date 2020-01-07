@@ -26,7 +26,7 @@ def main(rows):
     if not ctp.get_product_info(rows, proxies):
         fail_counter += 1
 
-    if fail_counter >= 2:
+    if fail_counter >= 1:
         refresh_ip()
         fail_counter = 0
 
