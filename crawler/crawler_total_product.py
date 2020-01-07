@@ -36,7 +36,7 @@ def get_product_info(row=0, proxies=proxies_api.get_proxies()):
         }
         # result_df = result_df.append(data, ignore_index=True)
         pd.DataFrame(data, index=[0]).to_csv('database/db_brand_list_check.csv', mode='a', header=False, index=False)
-        print(dispShopNo, 'file has existed')
+        # print(dispShopNo, 'file has existed')
         return True
         # continue
 

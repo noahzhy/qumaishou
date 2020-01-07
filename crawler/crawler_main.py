@@ -20,9 +20,9 @@ proxies = {'http': proxies_api.get_proxies()}
 
 def main(rows):
     global fail_counter
-    # cb.get_all_brand('CHN')
-    # cb.get_all_brand('ENG')
-    # dt.intersection_db_brand()
+    cb.get_all_brand('CHN')
+    cb.get_all_brand('ENG')
+    dt.intersection_db_brand()
     if not ctp.get_product_info(rows, proxies):
         fail_counter += 1
 
