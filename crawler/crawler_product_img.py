@@ -13,13 +13,16 @@ import requests
 
 def get_img(dispShopNo, img_url):
     img_url = 'http://static.lottedfs.cn/prod/prd-img/52/90/55/00/00/02/20000559052_1.jpg'
-    html = requests.get(img_url)
-
     img_name = img_url.split('/')[-1]
-    
-    with open(os.path.join('images', str(dispShopNo), img_name), 'wb') as file:
-        file.write(html.content)
-    pass
+    if not os.path.exists('images/{}/{}'.format(dispShopNo, img_name)):
+        html = requests.get(img_url)
+
+        with open(os.path.join('images', str(dispShopNo), img_name), 'wb') as file:
+            file.write(html.content)
+        pass
+
+    else:
+        print('img existed')
 
 
 def save_img_by_dispShopNo(dispShopNo, img_url):
