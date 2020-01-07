@@ -49,9 +49,7 @@ def get_product_info(row=0, proxies=proxies_api.get_proxies()):
             else:
                 status = 'x'
             
-            print('<<<<<<<<<<<<<<<')
             brand_name = df.loc[row]['brand_name']
-            print('>>>>>>>>>>>>>>>')
 
             data = {
                 'dispShopNo': dispShopNo,

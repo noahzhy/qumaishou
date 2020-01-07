@@ -38,14 +38,6 @@ def get_product_detail(dispShopNo, proxies):
     # brdWrap = soup.find_all('div', class_='brdWrap')
     # print(brdWrap)
     try:
-        # data = {
-        #     'tag': tag,
-        #     'product_No': prdNo, 
-        #     'brand_name': brand,
-        #     'product_name': product.strip(),
-        #     'img_url': img_url,
-        #     'us_price': us_price
-        # }
         df = pd.DataFrame(columns=['tag', 'brand_No', 'product_No', 'us_price', 'brand_name_chn', 'brand_name_eng', 'product_name', 'img_url'])
         # 通过店铺号来获取品牌号
         brndNo = BrndNo[0]['value']
@@ -135,12 +127,11 @@ def get_product_detail(dispShopNo, proxies):
 
 def main():
     # 输入英文品牌数据库的品牌编号
-    print(get_product_detail(10025423, proxies={}))
+    print(get_product_detail(10020359, proxies={}))
 
 
 if __name__ == "__main__":
     main()
-
 
 
 '''

@@ -30,17 +30,15 @@ def only_num(string):
     return int(''.join(list(filter(str.isdigit, string))))
 
 
-
-
 # proxies = {'http': proxies_api.get_proxies()}
 csv_file='database/db_brand_final.csv'
 df = pd.read_csv(csv_file)
 result_df = pd.read_csv('database/db_brand_list_check.csv')
 
 
-def get_product_info(row=0):
+def get_product_info(row=0, key='dispShopNo'):
 
-    dispShopNo = df.loc[row]['dispShopNo']
+    dispShopNo = df.loc[row][key]
 
     if not (os.path.exists('database/brand_product_{}.csv'.format(dispShopNo))):
         # has_existed_df = pd.read_csv('database/brand_product_{}.csv'.format(dispShopNo))
@@ -56,9 +54,12 @@ if __name__ == "__main__":
     # print(is_chinese('sdsds登录后可查看折扣价'), is_chinese('$306'))
     # print(only_chinese(s1))
     rows = []
-    csv_file = 'database/db_brand_list_check.csv'
+    # csv_file = 'database/db_brand_list_check.csv'
+    # df = pd.read_csv(csv_file)
+    csv_file = 'database/db_brand_final.csv'
     df = pd.read_csv(csv_file)
+    
 
     for i in range(0, df.shape[0]):
-        get_product_info(i)
+        get_product_info(i, 'dispShopNo_x')
     pass

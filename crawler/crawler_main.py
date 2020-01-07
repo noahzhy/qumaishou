@@ -24,7 +24,8 @@ def main(rows):
     if not ctp.get_product_info(rows, proxies):
         fail_counter += 1
 
-    if fail_counter >= 1:
+    # 代理IP更换频率
+    if fail_counter >= 3:
         refresh_ip()
         fail_counter = 0
 
@@ -40,7 +41,8 @@ if __name__ == '__main__':
     # cb.get_all_brand('ENG')
     # dt.intersection_db_brand()
 
-    pool = multiprocessing.Pool(multiprocessing.cpu_count())
+    # pool = multiprocessing.Pool(multiprocessing.cpu_count())
+    pool = multiprocessing.Pool(1)
     rows = []
 
     try: 
@@ -54,10 +56,6 @@ if __name__ == '__main__':
     dt.db_save('db_brand_list_check', result_df)
 
     [rows.append(i) for i in range(0, df.shape[0])]
-    # print(rows[-1])
-        # print(df.loc[i][])
-        # print(type(i))
-        # ctp.get_product_info(i)
 
     pool.map(main, rows)
     pool.close()
