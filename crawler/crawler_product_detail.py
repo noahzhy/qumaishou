@@ -74,12 +74,15 @@ def get_product_detail(dispShopNo, proxies):
                 print('pages:', pages)
                 [page_list.append(i) for i in range(2, pages+1)]
                 FLAG_GET_PAGES = True
+                # print('DEBUG_01')
 
             productMd = soup.find_all('ul', class_='listUl')
             # <input type="hidden" class="prdNoHidden" value="20000558611">
             for i in productMd[0].select('li', class_='productMd'):
+                # print('DEBUG_02')
                 list_flag = i.find_all('div', class_='flagArea')[0].select('em')
-                _tag = ''
+                # print('DEBUG_03')
+                prdNo, _tag, us_price, brand_chn, brand_eng, product, img_url = '', '', '', '', '', '', ''
                 if (list_flag):
                     for num in range(len(list_flag)):
                         # 忽略 3小时前 这个标签
@@ -94,13 +97,19 @@ def get_product_detail(dispShopNo, proxies):
                 else:
                     tag_sort = ''
 
+                # print('DEBUG_04')
                 prdNo = i.find_all('input', class_='prdNoHidden')[0]['value']
                 brand_chn = i.find_all('div', class_='brand')[0].select('strong')[0].get_text()
                 brand_eng = i.find_all('div', class_='brand')[0].contents[-1].strip()
                 product = i.find_all('div', class_='product')[0].get_text()
+                # print('DEBUG_05')
                 img_url = i.find_all('div', class_='img')[0].select('img')[0]['src'].replace('/dims/resize/180x180','')
-                us_price = i.find_all('div', class_='price')[0].select('span')[0].get_text()
+                try:
+                    us_price = i.find_all('div', class_='price')[0].select('span')[0].get_text()
+                except Exception as e:
+                    us_price = i.find_all('div', class_='discount')[0].select('strong')[0].get_text()
                 
+
                 if data_check.is_chinese(us_price):
                     us_price = i.find_all('div', class_='discount')[0].select('strong')[0].get_text()
 
@@ -126,7 +135,7 @@ def get_product_detail(dispShopNo, proxies):
 
 def main():
     # 输入英文品牌数据库的品牌编号
-    print(get_product_detail(10002537, proxies={}))
+    print(get_product_detail(10025423, proxies={}))
 
 
 if __name__ == "__main__":

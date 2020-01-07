@@ -15,7 +15,7 @@ import crawler.crawler_proxies as proxies_api
 
 
 fail_counter = 0
-proxies = {'http': proxies_api.get_proxies()}
+proxies = {}
 
 
 def main(rows):
@@ -30,7 +30,7 @@ def main(rows):
 
 
 def refresh_ip():
-    global proxies
+    # global proxies
     proxies = {'http': proxies_api.get_proxies()}
 
 
