@@ -3,34 +3,52 @@ import sys
 # 导入同级目录下其他文件夹下的文件
 sys.path.append("./")
 import pandas as pd
+import requests
+from fake_useragent import UserAgent
 
-# import tools.database_tool as dt
+import tools.database_tool as dt
 import crawler.crawler_brand as cb
 import crawler.crawler_product_detail as cpd
 import crawler.crawler_total_product as ctp
-import requests
 # import crawler.crawler_proxies as proxies_api
 
-def get_img(dispShopNo, img_url):
-    img_url = 'http://static.lottedfs.cn/prod/prd-img/52/90/55/00/00/02/20000559052_1.jpg'
-    img_name = img_url.split('/')[-1]
-    if not os.path.exists('images/{}/{}'.format(dispShopNo, img_name)):
-        html = requests.get(img_url)
+ua = UserAgent()
 
-        with open(os.path.join('images', str(dispShopNo), img_name), 'wb') as file:
-            file.write(html.content)
-        pass
+def get_img(dispShopNo, img_url, proxies):
+    session = requests.session()
+    img_name = img_url.split('/')[-1]
+    headers = {'User-Agent': ua.random}
+    if not os.path.exists('images/{}/{}'.format(dispShopNo, img_name)):
+        try:
+            html = session.get(url=img_url, headers=headers, proxies=proxies, timeout=5)
+            # if not 'inconvenience' in html.text:
+            with open(os.path.join('images', str(dispShopNo), img_name), 'wb') as file:
+                file.write(html.content)
+            #     file.flush()
+            # file.close()
+            print('images/{}/{}'.format(dispShopNo, img_name))
+            if dt.get_FileSize('images/{}/{}'.format(dispShopNo, img_name)) < 3:
+                os.remove('images/{}/{}'.format(dispShopNo, img_name))
+                return False
+            else:
+                return True
+
+        except Exception as e:
+            print(e)
+            return False
 
     else:
-        print('img existed')
+        # print('img existed')
+        return True
 
 
-def save_img_by_dispShopNo(dispShopNo, img_url):
+def save_img_by_dispShopNo(dispShopNo, img_url, proxies):
     if not os.path.exists('images/{}'.format(dispShopNo)):
         os.mkdir('images/{}'.format(dispShopNo))
     else:
-        print(dispShopNo, 'has existed')
-        get_img(dispShopNo, img_url)
+        # print(dispShopNo, 'has existed')
+        pass
+    return get_img(dispShopNo, img_url, proxies)
 
 
 def main():

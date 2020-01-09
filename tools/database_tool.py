@@ -62,11 +62,18 @@ def intersection_db_brand():
     return df
 
 
+def get_FileSize(filePath):
+    # filePath = unicode(filePath,'utf8')
+    fsize = os.path.getsize(filePath)
+    fsize = fsize / float(1024)
+    return round(fsize, 2)
+
+
 def main():
     # db_brand_eng()
     # db_brand_merge()
     # intersection_db_brand()
-    merge_brand_product_in_one()
+    # merge_brand_product_in_one()
 
     pass
 

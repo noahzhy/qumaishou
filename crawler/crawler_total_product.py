@@ -69,7 +69,8 @@ def get_product_info(row=0, proxies=proxies_api.get_proxies()):
     
         
 def main():
-    get_product_info()
+    # get_product_info()
+    pass
 
 
 if __name__ == "__main__":

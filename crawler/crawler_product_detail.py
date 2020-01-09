@@ -57,7 +57,7 @@ def get_product_detail(dispShopNo, proxies):
                 &viewType01=1
                 &lodfsAdltYn=N'''.format(brndNo, curPage).replace('\n', '').replace('\r', '').replace(' ', '')
             # print(url)
-            r = session.get(url=url, headers=headers, proxies=proxies, timeout=20)
+            r = session.get(url=url, headers=headers, proxies=proxies, timeout=5)
             soup = BeautifulSoup(r.text, "lxml")
             # <div class="paging ">
             if not FLAG_GET_PAGES:
