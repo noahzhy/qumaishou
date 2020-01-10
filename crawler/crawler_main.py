@@ -14,7 +14,6 @@ import crawler.crawler_product_img as cpi
 import crawler.crawler_proxies as proxies_api
 
 
-
 fail_counter = 0
 proxies = {}
 
@@ -66,9 +65,6 @@ def get_total_product_info_by_multi_processing():
         pool.map(total_product_info, rows)
         pool.close()
         pool.join()
-
-
-
 
 def get_total_img_by_multi_processing():
     df = pd.read_csv('database/db_total_product.csv')
