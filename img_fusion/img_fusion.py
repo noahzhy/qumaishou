@@ -10,7 +10,12 @@ from matplotlib import pyplot as plt
 def load_img():
     random.random()
     img_list = glob.glob('img_fusion/test/*')
-    return random.choice(img_list)
+    img_path = random.choice(img_list)
+
+    # def get_name(img=img_path):
+    #     return img_path.split('\\')[-1]
+
+    return img_path
     # return r'img_fusion\test\10002295747_03.jpg'
 
 
@@ -118,11 +123,10 @@ def test(resize=500):
 def test2():
     def get_holes(image, thresh):
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
         im_bw = cv2.threshold(gray, thresh, 255, cv2.THRESH_BINARY)[1]
         im_bw_inv = cv2.bitwise_not(im_bw)
-
         contour, _ = cv2.findContours(im_bw_inv, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+        
         for cnt in contour:
             cv2.drawContours(im_bw_inv, [cnt], 0, 255, -1)
 
@@ -133,7 +137,6 @@ def test2():
 
     def remove_background(image, thresh, scale_factor=1, kernel_range=range(1, 3), border=None):
         border = border or kernel_range[-1]
-
         holes = get_holes(image, thresh)
         small = cv2.resize(holes, None, fx=scale_factor, fy=scale_factor)
         bordered = cv2.copyMakeBorder(small, border, border, border, border, cv2.BORDER_CONSTANT)
@@ -147,14 +150,17 @@ def test2():
         fg = cv2.bitwise_and(image, image, mask=mask)
         return fg
 
-
-    img = cv2.imread(load_img())
+    img_path = load_img()
+    img_name = img_path.split('\\')[-1]
+    img = cv2.imread(img_path)
     nb_img = remove_background(img, 240)
     nb_img = cv2.resize(nb_img, (320, 320))
     cv2.imshow('mask', nb_img)
+    result_img = 'img_fusion/test_result/{}'.format(img_name)
+    result_img = result_img.replace('.jpg', '.png')
+    cv2.imwrite(result_img, nb_img)
     cv2.waitKey()
     pass
-
 
 
 if __name__ == "__main__":
@@ -162,3 +168,4 @@ if __name__ == "__main__":
     # img_fusion()
     # test(500)
     test2()
+    # test3(load_img())
