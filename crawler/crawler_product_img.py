@@ -27,6 +27,7 @@ def get_img(dispShopNo, img_url, proxies):
             print('images/{}/{}'.format(dispShopNo, img_name))
             if dt.get_FileSize('images/{}/{}'.format(dispShopNo, img_name)) < 3:
                 os.remove('images/{}/{}'.format(dispShopNo, img_name))
+                # print('images/{}/{}'.format(dispShopNo, img_name))
                 return False
             else:
                 return True
