@@ -21,11 +21,9 @@ def get_img(dispShopNo, img_url, proxies):
     if not os.path.exists('images/{}/{}'.format(dispShopNo, img_name)):
         try:
             html = session.get(url=img_url, headers=headers, proxies=proxies, timeout=5)
-            # if not 'inconvenience' in html.text:
             with open(os.path.join('images', str(dispShopNo), img_name), 'wb') as file:
                 file.write(html.content)
-            #     file.flush()
-            # file.close()
+
             print('images/{}/{}'.format(dispShopNo, img_name))
             if dt.get_FileSize('images/{}/{}'.format(dispShopNo, img_name)) < 3:
                 os.remove('images/{}/{}'.format(dispShopNo, img_name))
@@ -45,9 +43,7 @@ def get_img(dispShopNo, img_url, proxies):
 def save_img_by_dispShopNo(dispShopNo, img_url, proxies):
     if not os.path.exists('images/{}'.format(dispShopNo)):
         os.mkdir('images/{}'.format(dispShopNo))
-    else:
-        # print(dispShopNo, 'has existed')
-        pass
+
     return get_img(dispShopNo, img_url, proxies)
 
 

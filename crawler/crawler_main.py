@@ -84,11 +84,9 @@ def get_total_img_by_multi_processing():
 
 
 if __name__ == '__main__':
-
     # cb.get_all_brand('CHN')
     # cb.get_all_brand('ENG')
     # dt.intersection_db_brand()
-
 
     # get_total_product_info_by_multi_processing()
     get_total_img_by_multi_processing()
