@@ -138,19 +138,19 @@ if __name__ == '__main__':
     draw_str(out, (10, 20), str_msg)
     cv.imwrite('img_fusion/deep_image_matting/images/{}_out.png'.format(i), out)
 
-    new_bg = new_bgs[i]
-    new_bg = cv.imread(os.path.join(bg_test, new_bg))
+    # new_bg = new_bgs[i]
+    new_bg = cv.imread(bg_name)
     bh, bw = new_bg.shape[:2]
     wratio = w / bw
     hratio = h / bh
+    # 三元写法
     ratio = wratio if wratio > hratio else hratio
     print('ratio: ' + str(ratio))
     if ratio > 1:
         new_bg = cv.resize(
-            src=new_bg, 
-            dsize=(math.ceil(bw * ratio), 
-            math.ceil(bh * ratio)),
-            interpolation=cv.INTER_CUBIC
+            src = new_bg, 
+            dsize = (math.ceil(bw * ratio), math.ceil(bh * ratio)),
+            interpolation = cv.INTER_CUBIC
         )
 
     im, bg = composite4(img, new_bg, pred, w, h)
