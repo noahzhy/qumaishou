@@ -46,6 +46,7 @@ def merge_brand_product_in_one():
         frames.append(df)
 
     result = pd.concat(frames)
+    # result = remove_repetition(result, 'product_No')
     db_save('db_total_product', result)
     pass
 
@@ -69,11 +70,16 @@ def get_FileSize(filePath):
     return round(fsize, 2)
 
 
+def check_dir_with_brand_final():
+    ('database/brand_product/brand_product_{}.csv')
+    pass
+
+
 def main():
     # db_brand_eng()
     # db_brand_merge()
     # intersection_db_brand()
-    # merge_brand_product_in_one()
+    merge_brand_product_in_one()
 
     pass
 
