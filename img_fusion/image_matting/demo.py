@@ -65,7 +65,7 @@ def process_test(im_name, bg_name):
 
 
 if __name__ == '__main__':
-    checkpoint = 'BEST_checkpoint.tar'
+    checkpoint = 'img_fusion/image_matting/BEST_checkpoint.tar'
     checkpoint = torch.load(checkpoint)
     model = checkpoint['model'].module
     model = model.to(device)
@@ -73,21 +73,23 @@ if __name__ == '__main__':
 
     transformer = data_transforms['valid']
 
-    ensure_folder('images')
+    ensure_folder('img_fusion/image_matting/images')
 
     names = gen_test_names()
-    names = random.sample(names, 10)
+    names = random.sample(names, 1)
 
-    bg_test = 'data/bg_test/'
+    bg_test = 'img_fusion/test/'
     new_bgs = [f for f in os.listdir(bg_test) if
                os.path.isfile(os.path.join(bg_test, f)) and f.endswith('.jpg')]
     new_bgs = random.sample(new_bgs, 10)
 
     for i, name in enumerate(names):
-        fcount = int(name.split('.')[0].split('_')[0])
-        bcount = int(name.split('.')[0].split('_')[1])
+        # fcount = int(name.split('.')[0].split('_')[0])
+        # bcount = int(name.split('.')[0].split('_')[1])
+        # im_name = fg_test_files[fcount]
+        # bg_name = bg_test_files[bcount]
         im_name = fg_test_files[fcount]
-        bg_name = bg_test_files[bcount]
+        bg_name = bg_test_files[bcount]        
         img, alpha, fg, bg = process_test(im_name, bg_name)
 
         cv.imwrite('images/{}_image.png'.format(i), img)

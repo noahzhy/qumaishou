@@ -26,13 +26,13 @@ data_transforms = {
 }
 
 kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE, (3, 3))
-with open('Combined_Dataset/Training_set/training_fg_names.txt') as f:
+with open('img_fusion/image_matting/Combined_Dataset/Training_set/training_fg_names.txt') as f:
     fg_files = f.read().splitlines()
-with open('Combined_Dataset/Training_set/training_bg_names.txt') as f:
+with open('img_fusion/image_matting/Combined_Dataset/Training_set/training_bg_names.txt') as f:
     bg_files = f.read().splitlines()
-with open('Combined_Dataset/Test_set/test_fg_names.txt') as f:
+with open('img_fusion/image_matting/Combined_Dataset/Test_set/test_fg_names.txt') as f:
     fg_test_files = f.read().splitlines()
-with open('Combined_Dataset/Test_set/test_bg_names.txt') as f:
+with open('img_fusion/image_matting/Combined_Dataset/Test_set/test_bg_names.txt') as f:
     bg_test_files = f.read().splitlines()
 
 
