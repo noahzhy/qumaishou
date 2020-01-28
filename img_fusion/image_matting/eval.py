@@ -10,13 +10,20 @@ from config import device
 from data_gen import data_transforms
 from utils import ensure_folder
 
-IMG_FOLDER = 'data/alphamatting/input_lowres'
-TRIMAP_FOLDERS = ['data/alphamatting/trimap_lowres/Trimap1', 'data/alphamatting/trimap_lowres/Trimap2',
-                  'data/alphamatting/trimap_lowres/Trimap3']
-OUTPUT_FOLDERS = ['images/alphamatting/output_lowres/Trimap1', 'images/alphamatting/output_lowres/Trimap2', 'images/alphamatting/output_lowres/Trimap3', ]
+IMG_FOLDER = 'img_fusion/image_matting/data/alphamatting/input_lowres'
+TRIMAP_FOLDERS = [
+    'img_fusion/image_matting/data/alphamatting/trimap_lowres/Trimap1',
+    'img_fusion/image_matting/data/alphamatting/trimap_lowres/Trimap2',
+    'img_fusion/image_matting/data/alphamatting/trimap_lowres/Trimap3'
+]
+OUTPUT_FOLDERS = [
+    'img_fusion/image_matting/images/alphamatting/output_lowres/Trimap1',
+    'img_fusion/image_matting/images/alphamatting/output_lowres/Trimap2',
+    'img_fusion/image_matting/images/alphamatting/output_lowres/Trimap3', 
+]
 
 if __name__ == '__main__':
-    checkpoint = 'BEST_checkpoint.tar'
+    checkpoint = 'img_fusion/image_matting/BEST_checkpoint.tar'
     checkpoint = torch.load(checkpoint)
     model = checkpoint['model'].module
     model = model.to(device)
