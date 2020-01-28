@@ -31,8 +31,8 @@ if __name__ == '__main__':
 
     transformer = data_transforms['valid']
 
-    ensure_folder('images')
-    ensure_folder('images/alphamatting')
+    ensure_folder('img_fusion/image_matting/images')
+    ensure_folder('img_fusion/image_matting/images/alphamatting')
     ensure_folder(OUTPUT_FOLDERS[0])
     ensure_folder(OUTPUT_FOLDERS[1])
     ensure_folder(OUTPUT_FOLDERS[2])
