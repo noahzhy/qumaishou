@@ -76,7 +76,7 @@ if __name__ == '__main__':
     ensure_folder('img_fusion/image_matting/images')
 
     names = gen_test_names()
-    names = random.sample(names, 1)
+    names = random.sample(names, 10)
 
     bg_test = 'img_fusion/test/'
     new_bgs = [f for f in os.listdir(bg_test) if
@@ -84,12 +84,10 @@ if __name__ == '__main__':
     new_bgs = random.sample(new_bgs, 10)
 
     for i, name in enumerate(names):
-        # fcount = int(name.split('.')[0].split('_')[0])
-        # bcount = int(name.split('.')[0].split('_')[1])
-        # im_name = fg_test_files[fcount]
-        # bg_name = bg_test_files[bcount]
+        fcount = int(name.split('.')[0].split('_')[0])
+        bcount = int(name.split('.')[0].split('_')[1])
         im_name = fg_test_files[fcount]
-        bg_name = bg_test_files[bcount]        
+        bg_name = bg_test_files[bcount]
         img, alpha, fg, bg = process_test(im_name, bg_name)
 
         cv.imwrite('images/{}_image.png'.format(i), img)
