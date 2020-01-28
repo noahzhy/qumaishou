@@ -12,15 +12,23 @@ from utils import ensure_folder
 
 IMG_FOLDER = 'img_fusion/image_matting/data/input'
 TRIMAP_FOLDERS = [
-    'img_fusion/image_matting/data/trimap/Trimap1',
-    'img_fusion/image_matting/data/trimap/Trimap2',
-    'img_fusion/image_matting/data/trimap/Trimap3'
+    'img_fusion/image_matting/data/trimap'
 ]
 OUTPUT_FOLDERS = [
-    'img_fusion/image_matting/result_images/Trimap1',
-    'img_fusion/image_matting/result_images/Trimap2',
-    'img_fusion/image_matting/result_images/Trimap3', 
+    'img_fusion/image_matting/result_images'
 ]
+# backup code
+# TRIMAP_FOLDERS = [
+#     'img_fusion/image_matting/data/trimap/Trimap1',
+#     'img_fusion/image_matting/data/trimap/Trimap2',
+#     'img_fusion/image_matting/data/trimap/Trimap3',
+# ]
+# backup code
+# OUTPUT_FOLDERS = [
+#     'img_fusion/image_matting/result_images/Trimap1',
+#     'img_fusion/image_matting/result_images/Trimap2',
+#     'img_fusion/image_matting/result_images/Trimap3', 
+# ]
 
 if __name__ == '__main__':
     checkpoint = 'img_fusion/image_matting/BEST_checkpoint.tar'
@@ -33,8 +41,8 @@ if __name__ == '__main__':
 
     ensure_folder('img_fusion/image_matting/result_images')
     ensure_folder(OUTPUT_FOLDERS[0])
-    ensure_folder(OUTPUT_FOLDERS[1])
-    ensure_folder(OUTPUT_FOLDERS[2])
+    # ensure_folder(OUTPUT_FOLDERS[1])
+    # ensure_folder(OUTPUT_FOLDERS[2])
 
     files = [f for f in os.listdir(IMG_FOLDER) if f.endswith('.png')]
 
@@ -50,7 +58,8 @@ if __name__ == '__main__':
         image = transformer(image)
         x[0:, 0:3, :, :] = image
 
-        for i in range(3):
+        for i in range(1):
+        # for i in range(3):
             filename = os.path.join(TRIMAP_FOLDERS[i], file)
             print('reading {}...'.format(filename))
             trimap = cv.imread(filename, 0)
