@@ -10,16 +10,16 @@ from config import device
 from data_gen import data_transforms
 from utils import ensure_folder
 
-IMG_FOLDER = 'img_fusion/image_matting/data/alphamatting/input_lowres'
+IMG_FOLDER = 'img_fusion/image_matting/data/input'
 TRIMAP_FOLDERS = [
-    'img_fusion/image_matting/data/alphamatting/trimap_lowres/Trimap1',
-    'img_fusion/image_matting/data/alphamatting/trimap_lowres/Trimap2',
-    'img_fusion/image_matting/data/alphamatting/trimap_lowres/Trimap3'
+    'img_fusion/image_matting/data/trimap/Trimap1',
+    'img_fusion/image_matting/data/trimap/Trimap2',
+    'img_fusion/image_matting/data/trimap/Trimap3'
 ]
 OUTPUT_FOLDERS = [
-    'img_fusion/image_matting/images/alphamatting/output_lowres/Trimap1',
-    'img_fusion/image_matting/images/alphamatting/output_lowres/Trimap2',
-    'img_fusion/image_matting/images/alphamatting/output_lowres/Trimap3', 
+    'img_fusion/image_matting/result_images/Trimap1',
+    'img_fusion/image_matting/result_images/Trimap2',
+    'img_fusion/image_matting/result_images/Trimap3', 
 ]
 
 if __name__ == '__main__':
@@ -31,8 +31,7 @@ if __name__ == '__main__':
 
     transformer = data_transforms['valid']
 
-    ensure_folder('img_fusion/image_matting/images')
-    ensure_folder('img_fusion/image_matting/images/alphamatting')
+    ensure_folder('img_fusion/image_matting/result_images')
     ensure_folder(OUTPUT_FOLDERS[0])
     ensure_folder(OUTPUT_FOLDERS[1])
     ensure_folder(OUTPUT_FOLDERS[2])
