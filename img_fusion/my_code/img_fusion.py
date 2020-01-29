@@ -12,9 +12,6 @@ def load_img():
     img_list = glob.glob('img_fusion/test/*')
     img_path = random.choice(img_list)
 
-    # def get_name(img=img_path):
-    #     return img_path.split('\\')[-1]
-
     return img_path
     # return r'img_fusion\test\10002295747_03.jpg'
 
@@ -22,20 +19,13 @@ def load_img():
 def img_fusion():
     img = cv2.imread(load_img())
     img = cv2.resize(img, (320, 320))
-    # img_hsv = cv2.cvtColor(img, cv2.cvtColor)
-    # cv2.imshow('original img', img)
-    # img = subimage(img, [240, 240], 0, 480, 480)
     cv2.imshow('original img', img)
     # 获取mask
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     lower_white = np.array([-1, -1, -1])
     upper_white = np.array([240,240,240])
     mask = cv2.inRange(hsv, lower_white, upper_white)
-    # mask = cv2.GaussianBlur(mask, (3,3), 0)
     cv2.imshow('Mask', mask)
-    # erode = cv2.erode(mask, None, iterations=1)
-    # dilate = cv2.dilate(erode, None, iterations=1)
-    # cv2.imshow('final', dilate)
 
     sub_img = cv2.bitwise_or(img, img, mask=mask)
     cv2.imshow('mask', sub_img)
@@ -153,12 +143,14 @@ def test2():
     img_path = load_img()
     img_name = img_path.split('\\')[-1]
     img = cv2.imread(img_path)
-    nb_img = remove_background(img, 240)
+    img = cv2.resize(img, (500, 500))
+    cv2.imshow('org', img)
+    nb_img = remove_background(img, 210)
     nb_img = cv2.resize(nb_img, (320, 320))
     cv2.imshow('mask', nb_img)
-    result_img = 'img_fusion/test_result/{}'.format(img_name)
-    result_img = result_img.replace('.jpg', '.png')
-    cv2.imwrite(result_img, nb_img)
+    # result_img = 'img_fusion/test_result/{}'.format(img_name)
+    # result_img = result_img.replace('.jpg', '.png')
+    # cv2.imwrite(result_img, nb_img)
     cv2.waitKey()
     pass
 
