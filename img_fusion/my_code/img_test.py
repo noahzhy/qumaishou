@@ -36,6 +36,27 @@ def generate_trimap(alpha, write_name):
     return trimap.astype(np.uint8)
 
 
+def gen_trimap(path):
+    import numpy as np
+    import cv2
+    from matplotlib import pyplot as plt
+    
+    img = cv2.imread(path)
+    mask = np.zeros(img.shape[:2],np.uint8)
+
+    bgdModel = np.zeros((1,65),np.float64)
+    fgdModel = np.zeros((1,65),np.float64)
+
+    rect = (50,50,450,290)
+
+    cv2.grabCut(img,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
+    mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')
+    img = img*mask2[:,:,np.newaxis]
+    plt.imshow(img)
+    plt.colorbar()
+    plt.show()
+
+
 def load_img():
     random.random()
     img_list = glob.glob('img_fusion/test/*')
@@ -45,13 +66,13 @@ def load_img():
 
 if __name__ == "__main__":
     # alpha = cv.imread(r"img_fusion\test\10002212732_01.jpg")
-    img_src = load_img()
-    # img_src = r'img_fusion\test\20000758013_1.jpg'
-    alpha = cv.imread(img_src)
-    img = generate_trimap(alpha, img_src.split('\\')[-1].split('.')[0])
-    # cv.imread(img)
-    img = cv.resize(img, (512, 512))
-    cv.imshow("trimp", img)
-    cv.waitKey(0)
+    # img_src = load_img()
+    # # img_src = r'img_fusion\test\20000758013_1.jpg'
+    # alpha = cv.imread(img_src)
+    # img = generate_trimap(alpha, img_src.split('\\')[-1].split('.')[0])
+    # img = cv.resize(img, (512, 512))
+    # cv.imshow("trimp", img)
+    # cv.waitKey(0)
+    gen_trimap(load_img())
 
     
