@@ -143,7 +143,7 @@ def test2():
     img_path = load_img()
     img_name = img_path.split('\\')[-1]
     img = cv2.imread(img_path)
-    img = cv2.resize(img, (500, 500))
+    img = cv2.resize(img, (320, 320))
     cv2.imshow('org', img)
     nb_img = remove_background(img, 210)
     nb_img = cv2.resize(nb_img, (320, 320))

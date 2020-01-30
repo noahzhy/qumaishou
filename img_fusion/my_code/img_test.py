@@ -5,6 +5,51 @@ import random
 import glob
 
 
+def test2(path):
+    def get_holes(image, thresh):
+        gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+        im_bw = cv.threshold(gray, thresh, 255, cv.THRESH_BINARY)[1]
+        im_bw_inv = cv.bitwise_not(im_bw)
+        contour, _ = cv.findContours(im_bw_inv, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE)
+        
+        for cnt in contour:
+            cv.drawContours(im_bw_inv, [cnt], 0, 255, -1)
+
+        nt = cv.bitwise_not(im_bw)
+        im_bw_inv = cv.bitwise_or(im_bw_inv, nt)
+        return im_bw_inv
+
+
+    def remove_background(image, thresh, scale_factor=1, kernel_range=range(1, 3), border=None):
+        border = border or kernel_range[-1]
+        holes = get_holes(image, thresh)
+        small = cv.resize(holes, None, fx=scale_factor, fy=scale_factor)
+        bordered = cv.copyMakeBorder(small, border, border, border, border, cv.BORDER_CONSTANT)
+
+        for i in kernel_range:
+            kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE, (2*i+1, 2*i+1))
+            bordered = cv.morphologyEx(bordered, cv.MORPH_CLOSE, kernel)
+
+        unbordered = bordered[border: -border, border: -border]
+        mask = cv.resize(unbordered, (image.shape[1], image.shape[0]))
+        fg = cv.bitwise_and(image, image, mask=mask)
+        return fg
+
+    img_path = path
+    # img_name = img_path.split('\\')[-1]
+    img = cv.imread(img_path)
+    # img = cv.resize(img, (320, 320))
+    # cv.imshow('org', img)
+    nb_img = remove_background(img, 240)
+    # nb_img = cv.resize(nb_img, (320, 320))
+    # cv.imshow('mask', nb_img)
+    # result_img = 'img_fusion/test_result/{}'.format(img_name)
+    # result_img = result_img.replace('.jpg', '.png')
+    # cv.imwrite(result_img, nb_img)
+    # cv.waitKey()
+    return nb_img
+
+
 def generate_trimap(alpha, write_name):
     
     img = alpha
@@ -14,12 +59,16 @@ def generate_trimap(alpha, write_name):
     
     # 图像平滑
     blur = cv.blur(gray, (3, 3))
-    ret, thresh = cv.threshold(blur, 240, 255, cv.THRESH_BINARY)
+    ret, thresh = cv.threshold(blur, 0, 100, cv.THRESH_BINARY)
     alpha = thresh
-    # alpha = cv.resize(alpha, (320,320))
-    
-    # cv.imshow('alpha', alpha)
-    # cv.waitKey()
+
+    kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE, (3, 3))
+    unknown_dilate = cv.dilate(alpha, kernel, iterations=20)
+    trimap = (unknown_dilate - alpha) * 128 + alpha * 255
+
+    alpha = cv.resize(alpha, (720,720))
+    cv.imshow('alpha', alpha)
+    cv.waitKey()
 
     # fg = np.array(np.less_equal(alpha, 240).astype(np.float32))
     # img = cv.resize(fg, (512, 512))
@@ -31,30 +80,10 @@ def generate_trimap(alpha, write_name):
 
     unknown_dilate = cv.dilate(unknown, kernel, iterations=30)
     trimap = (unknown_dilate - unknown) * 128 + unknown * 255
-    cv.imwrite("{}.png".format(write_name), trimap)
+    cv.imwrite(r"E:\github_clone\indexnet_matting\examples\images\test_origin.png", img)
+    cv.imwrite(r"E:\github_clone\indexnet_matting\examples\trimaps\test_trimap.png", trimap)
 
     return trimap.astype(np.uint8)
-
-
-def gen_trimap(path):
-    import numpy as np
-    import cv2
-    from matplotlib import pyplot as plt
-    
-    img = cv2.imread(path)
-    mask = np.zeros(img.shape[:2],np.uint8)
-
-    bgdModel = np.zeros((1,65),np.float64)
-    fgdModel = np.zeros((1,65),np.float64)
-
-    rect = (50,50,450,290)
-
-    cv2.grabCut(img,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
-    mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')
-    img = img*mask2[:,:,np.newaxis]
-    plt.imshow(img)
-    plt.colorbar()
-    plt.show()
 
 
 def load_img():
@@ -66,13 +95,14 @@ def load_img():
 
 if __name__ == "__main__":
     # alpha = cv.imread(r"img_fusion\test\10002212732_01.jpg")
-    # img_src = load_img()
+    img_src = load_img()
     # # img_src = r'img_fusion\test\20000758013_1.jpg'
     # alpha = cv.imread(img_src)
-    # img = generate_trimap(alpha, img_src.split('\\')[-1].split('.')[0])
-    # img = cv.resize(img, (512, 512))
-    # cv.imshow("trimp", img)
-    # cv.waitKey(0)
-    gen_trimap(load_img())
+    alpha = test2(img_src)
+    img = generate_trimap(alpha, img_src.split('\\')[-1].split('.')[0])
+    img = cv.resize(img, (512, 512))
+    cv.imshow("trimp", img)
+    cv.waitKey(0)
+    # gen_trimap(load_img())
 
     
