@@ -17,12 +17,12 @@ class Skincare(object):
         self.text_obj = text_obj
 
 
-class ImgBase:
-    def __init__(self):
-        self.url = ''
-        self.size = ''
-        self.color = Color()
-        self.position = ''
+class ImgBase(object):
+    def __init__(self, obj):
+        self.url = '02'
+        self.S = '01'
+        self.C = Color()
+        self.P = '05'
         # pass
 
     def set_url(self, url):
@@ -50,9 +50,9 @@ class ImgBase:
         return self.position
 
     _url = property(get_url, set_url)
-    _size = property(get_size, set_size)
-    _color = property(get_color, set_color)
-    _position = property(get_position, set_position)
+    S = property(get_size, set_size)
+    C = property(get_color, set_color)
+    P = property(get_position, set_position)
 
 
 class TextBase:
@@ -64,10 +64,18 @@ class TextBase:
 
 
 class ImgText:
-    def __init__(self, magic_key):
-        self.magic_key = magic_key
-        self.obj_class = obj_class
-        self.obj_main = obj_main
+    def __init__(self, obj):
+        self.product = [obj.P if hasattr(obj, 'P') else ImgBase()]
+        self.ground = [obj.G if hasattr(obj, 'G') else ImgBase()]
+        self.frame = [obj.F if hasattr(obj, 'F') else ImgBase()]
+        self.watermark = [obj.W if hasattr(obj, 'W') else ImgBase()]
+
+        self.brand = [obj.B if hasattr(obj, 'B') else TextBase()]
+        self.name = [obj.N if hasattr(obj, 'N') else TextBase()]
+        self.usage = [obj.U if hasattr(obj, 'U') else TextBase()]
+        self.effect = [obj.E if hasattr(obj, 'E') else TextBase()]
+        self.review = [obj.R if hasattr(obj, 'R') else TextBase()]
+        self.ingredient = [obj.I if hasattr(obj, 'I') else TextBase()]
 
     def img_generator(self, img_list, text_list):
         for img in img_list:
@@ -76,8 +84,9 @@ class ImgText:
         for text in text_list:
             pass
 
-    def funcname(parameter_list):
-        pass
+
+    # P = property(set_P)
+
 
 
 if __name__ == "__main__":
