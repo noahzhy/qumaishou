@@ -1,30 +1,58 @@
 class Color:
-    red = ''
     black = ''
     white = ''
+    dark_red = '#8B0000'
     light_red = ''
     light_orange = ''
 
 
-class Makeup:
+class Makeup(object):
     def __init__(self):
         pass
 
 
-class Skincare:
-    def __init__(self):
-        pass
-
-    def set_text(self, brand_name, produce_name, ):
-        pass
+class Skincare(object):
+    def __init__(self, img_obj, text_obj):
+        self.img_obj = img_obj
+        self.text_obj = text_obj
 
 
 class ImgBase:
-    def __init__(self, url, size, color, position):
+    def __init__(self):
+        self.url = ''
+        self.size = ''
+        self.color = Color()
+        self.position = ''
+        # pass
+
+    def set_url(self, url):
         self.url = url
+
+    def set_size(self, size):
         self.size = size
+
+    def set_color(self, color):
         self.color = color
+
+    def set_position(self, position):
         self.position = position
+
+    def get_url(self):
+        return self.url
+
+    def get_size(self):
+        return self.size
+
+    def get_color(self):
+        return self.color
+
+    def get_position(self):
+        return self.position
+
+    _url = property(get_url, set_url)
+    _size = property(get_size, set_size)
+    _color = property(get_color, set_color)
+    _position = property(get_position, set_position)
 
 
 class TextBase:
