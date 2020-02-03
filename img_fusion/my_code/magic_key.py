@@ -4,7 +4,7 @@ import random
 import json
 
 
-key = 'SC00-PC00PR45GR04PP03WK00BF00NC00UC00-0000'
+# key = 'SC00-PC00PR45GR04PP03WK00BF00NC00UC00-0000'
 # key = 'SC00-BC01BF05NF07NC02US05BP05-0000'
 
 def magic_key_generator(rule):
@@ -49,9 +49,9 @@ def dict_to_obj(d):
 
 def magic_key_parsing(magic_key):
     key_code = []
-    img_code = list('PGWF')
-    text_code = list('BNUEIR')
-    key_list = key.split('-')
+    # img_code = list('PGWF')
+    # text_code = list('BNUEIR')
+    key_list = magic_key.split('-')
     # print(img_code)
 
     for i in range(0, len(key_list[1]), 4):
@@ -60,9 +60,10 @@ def magic_key_parsing(magic_key):
     key_code.sort()
     obj_dict = key_code_to_dict(key_code)
     # dict to json
-    json.dumps(obj_dict)
+    # json.dumps(obj_dict)
     return obj_dict
 
 
 if __name__ == "__main__":
-    magic_key_parsing(key)
+    # magic_key_parsing(key)
+    pass

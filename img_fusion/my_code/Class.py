@@ -1,7 +1,9 @@
-class Color:
-    # def __init__(self):
-    #     pass
+import numpy as np
+import json
 
+default_dict = eval('{}')
+
+class Color:
     black = ''
     white = ''
     dark_red = '#8B0000'
@@ -21,11 +23,11 @@ class Skincare(object):
 
 
 class ImgBase(object):
-    def __init__(self, url='', size='', color='', position=''):
-        self.url = url
-        self.size = size
-        self.color = color
-        self.position = position
+    def __init__(self, obj=default_dict):
+        self.size = obj.get('S')
+        self.color = obj.get('C')
+        self.rotation = obj.get('R')
+        self.position = obj.get('P')
 
     def set_url(self, url):
         self.url = url
@@ -51,25 +53,20 @@ class ImgBase(object):
     def get_position(self):
         return self.P
 
-    # _url = property(get_url, set_url)
-    # S = property(get_size, set_size)
-    # C = property(get_color, set_color)
-    # P = property(get_position, set_position)
-
 
 class TextBase:
-    def __init__(self, obj=''):
-        self.font = [obj.S if hasattr(obj, 'F') else '']
-        self.size = [obj.S if hasattr(obj, 'S') else '']
-        self.color = [obj.S if hasattr(obj, 'C') else '']
-        self.position = [obj.S if hasattr(obj, 'P') else '']
+    def __init__(self, obj=default_dict):
+        self.font = obj.get('F')
+        self.size = obj.get('S')
+        self.color = obj.get('C')
+        self.position = obj.get('P')
 
 
 class ImgText:
-    def __init__(self, obj):
+    def __init__(self):
         self.layout_map = [
-            [0, 0, 0], 
-            [0, 0, 0], 
+            [0, 0, 0],
+            [0, 0, 0],
             [0, 0, 0]
         ]
 
@@ -85,6 +82,49 @@ class ImgText:
         self.review = TextBase()
         self.ingredient = TextBase()
 
+    def set_product(self, obj):
+        self.product = obj
+
+    def set_background(self, obj):
+        self.background = obj
+
+    def set_frame(self, obj):
+        self.frame = obj
+
+    def set_watermark(self, obj):
+        self.watermark = obj
+
+    def set_brand(self, obj):
+        self.brand = obj
+
+    def set_name(self, obj):
+        self.name = obj
+
+    def set_usage(self, obj):
+        self.usage = obj
+
+    def set_effect(self, obj):
+        self.effect = obj
+
+    def set_review(self, obj):
+        self.review = obj
+
+    def set_ingredient(self, obj):
+        self.ingredient = obj
+
+    def is_empty(self, key):
+        a = int((key-1) / 3)
+        b = (key+2) % 3
+        x = np.array(self.layout_map)
+        if x[a][b] == 0:
+            return True
+        else:
+            return False
+
+        # for i in range(x.shape[0]):
+        #     for j in range(x.shape[1]):
+        #         print(x[i][j])
+
     def img_generator(self, img_list, text_list):
         for img in img_list:
             pass
@@ -93,9 +133,5 @@ class ImgText:
             pass
 
 
-    # P = property(set_P)
-
-
-
 if __name__ == "__main__":
-    pass
+    print(ImgText().is_empty(1))
