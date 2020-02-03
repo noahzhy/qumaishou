@@ -1,4 +1,7 @@
 class Color:
+    # def __init__(self):
+    #     pass
+
     black = ''
     white = ''
     dark_red = '#8B0000'
@@ -18,12 +21,11 @@ class Skincare(object):
 
 
 class ImgBase(object):
-    def __init__(self, obj):
-        self.url = '02'
-        self.S = '01'
-        self.C = Color()
-        self.P = '05'
-        # pass
+    def __init__(self, url='', size='', color='', position=''):
+        self.url = url
+        self.size = size
+        self.color = color
+        self.position = position
 
     def set_url(self, url):
         self.url = url
@@ -38,44 +40,50 @@ class ImgBase(object):
         self.position = position
 
     def get_url(self):
-        return self.url
+        return self._url
 
     def get_size(self):
-        return self.size
+        return self.S
 
     def get_color(self):
-        return self.color
+        return self.C
 
     def get_position(self):
-        return self.position
+        return self.P
 
-    _url = property(get_url, set_url)
-    S = property(get_size, set_size)
-    C = property(get_color, set_color)
-    P = property(get_position, set_position)
+    # _url = property(get_url, set_url)
+    # S = property(get_size, set_size)
+    # C = property(get_color, set_color)
+    # P = property(get_position, set_position)
 
 
 class TextBase:
-    def __init__(self, font, size, color, position):
-        self.font = font
-        self.size = size
-        self.color = color
-        self.position = position
+    def __init__(self, obj=''):
+        self.font = [obj.S if hasattr(obj, 'F') else '']
+        self.size = [obj.S if hasattr(obj, 'S') else '']
+        self.color = [obj.S if hasattr(obj, 'C') else '']
+        self.position = [obj.S if hasattr(obj, 'P') else '']
 
 
 class ImgText:
     def __init__(self, obj):
-        self.product = [obj.P if hasattr(obj, 'P') else ImgBase()]
-        self.ground = [obj.G if hasattr(obj, 'G') else ImgBase()]
-        self.frame = [obj.F if hasattr(obj, 'F') else ImgBase()]
-        self.watermark = [obj.W if hasattr(obj, 'W') else ImgBase()]
+        self.layout_map = [
+            [0, 0, 0], 
+            [0, 0, 0], 
+            [0, 0, 0]
+        ]
 
-        self.brand = [obj.B if hasattr(obj, 'B') else TextBase()]
-        self.name = [obj.N if hasattr(obj, 'N') else TextBase()]
-        self.usage = [obj.U if hasattr(obj, 'U') else TextBase()]
-        self.effect = [obj.E if hasattr(obj, 'E') else TextBase()]
-        self.review = [obj.R if hasattr(obj, 'R') else TextBase()]
-        self.ingredient = [obj.I if hasattr(obj, 'I') else TextBase()]
+        self.product = ImgBase()
+        self.background = ImgBase()
+        self.frame = ImgBase()
+        self.watermark = ImgBase()
+
+        self.brand = TextBase()
+        self.name = TextBase()
+        self.usage = TextBase()
+        self.effect = TextBase()
+        self.review = TextBase()
+        self.ingredient = TextBase()
 
     def img_generator(self, img_list, text_list):
         for img in img_list:

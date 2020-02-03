@@ -1,9 +1,11 @@
 import os
 import random
-import Class
+# import Class
+import json
 
-# key = 'SC00-PC00PR45GR04PP03WK00BF00NC00UC00-0000'
-key = 'SC00-BC01BF05NF07NC02US05BP05-0000'
+
+key = 'SC00-PC00PR45GR04PP03WK00BF00NC00UC00-0000'
+# key = 'SC00-BC01BF05NF07NC02US05BP05-0000'
 
 def magic_key_generator(rule):
     pass
@@ -57,12 +59,9 @@ def magic_key_parsing(magic_key):
 
     key_code.sort()
     obj_dict = key_code_to_dict(key_code)
-    # obj = dict2obj(object, obj_dict)
-    obj = dict_to_obj(obj_dict)
-    x = Class.ImgText(obj)
-
-    print(x.product.C)
-
+    # dict to json
+    json.dumps(obj_dict)
+    return obj_dict
 
 
 if __name__ == "__main__":
