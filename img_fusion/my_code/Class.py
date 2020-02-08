@@ -29,6 +29,9 @@ class ImgBase(object):
         self.rotation = obj.get('R')
         self.position = obj.get('P')
 
+        self.url = ''
+        print(obj)
+
     def set_url(self, url):
         self.url = url
 
@@ -42,16 +45,16 @@ class ImgBase(object):
         self.position = position
 
     def get_url(self):
-        return self._url
+        return self.url
 
     def get_size(self):
-        return self.S
+        return self.size
 
     def get_color(self):
-        return self.C
+        return self.color
 
     def get_position(self):
-        return self.P
+        return self.position
 
 
 class TextBase:
@@ -134,4 +137,20 @@ class ImgText:
 
 
 if __name__ == "__main__":
-    print(ImgText().is_empty(1))
+    # print(ImgText().is_empty(1))
+    img_text = ImgText()
+    img_text.background.set_url('img_fusion/img_for_test/background.jpg')
+    img_text.product.set_url('img_fusion/img_for_test/product_01.png')
+    
+    import cv2
+    from PIL import Image
+    bg = Image.open(img_text.background.get_url())
+    prod = Image.open(img_text.product.get_url())
+    layer = Image.new('RGBA', bg.size, (0,0,0,0))
+    layer.paste(
+        prod,
+        (int(bg.size[0]/2-prod.size[0]/2), int(bg.size[1]/2-prod.size[1]/2))
+    )
+    out = Image.composite(layer, bg, layer)
+    out.show()
+

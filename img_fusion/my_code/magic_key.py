@@ -4,7 +4,7 @@ import random
 import json
 
 
-# key = 'SC00-PC00PR45GR04PP03WK00BF00NC00UC00-0000'
+key = 'SC00-PC00PR45GR04PP03WK00BF00NC00UC00-0000'
 # key = 'SC00-BC01BF05NF07NC02US05BP05-0000'
 
 def magic_key_generator(rule):
@@ -23,7 +23,6 @@ def key_code_to_dict(key_code):
             lexiconDict[startLetter] = {key_code[x][1]: key_code[x][2:]}
         else:
             dictLexicons[key_code[x][1]] = key_code[x][2:]
-            pass
 
     return lexiconDict
 
@@ -65,5 +64,5 @@ def magic_key_parsing(magic_key):
 
 
 if __name__ == "__main__":
-    # magic_key_parsing(key)
+    magic_key_parsing(key)
     pass
