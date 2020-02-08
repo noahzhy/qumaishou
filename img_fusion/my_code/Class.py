@@ -30,32 +30,40 @@ class ImgBase(object):
         self.position = obj.get('P')
 
         self.url = ''
-        print(obj)
+        # print(obj)
 
     def set_url(self, url):
         self.url = url
 
-    def set_size(self, size):
-        self.size = size
-
-    def set_color(self, color):
-        self.color = color
-
-    def set_position(self, position):
-        self.position = position
-
     def get_url(self):
         return self.url
+
+    def set_size(self, size):
+        self.size = size
 
     def get_size(self):
         return self.size
 
+    def set_color(self, color):
+        self.color = color
+
     def get_color(self):
         return self.color
+
+    def set_position(self, position):
+        self.position = position
 
     def get_position(self):
         return self.position
 
+    def set_rotation(self, rotation):
+        if int(rotation) >= 10:
+            self.rotation = '-{}'.format(rotation[-1])
+        else:
+            self.rotation = '00' if rotation == '' else rotation
+
+    def get_rotation(self):
+        return int(self.rotation)*10
 
 class TextBase:
     def __init__(self, obj=default_dict):
@@ -141,16 +149,21 @@ if __name__ == "__main__":
     img_text = ImgText()
     img_text.background.set_url('img_fusion/img_for_test/background.jpg')
     img_text.product.set_url('img_fusion/img_for_test/product_01.png')
+    img_text.product.set_rotation('13')
     
-    import cv2
+    # import cv2
     from PIL import Image
+
     bg = Image.open(img_text.background.get_url())
     prod = Image.open(img_text.product.get_url())
+    prod = prod.resize((500, 500))
+    prod = prod.rotate(img_text.product.get_rotation())
     layer = Image.new('RGBA', bg.size, (0,0,0,0))
     layer.paste(
         prod,
         (int(bg.size[0]/2-prod.size[0]/2), int(bg.size[1]/2-prod.size[1]/2))
     )
     out = Image.composite(layer, bg, layer)
+    out.save('result.jpg', quality=100)
     out.show()
 
