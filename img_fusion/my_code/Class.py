@@ -164,6 +164,9 @@ if __name__ == "__main__":
         (int(bg.size[0]/2-prod.size[0]/2), int(bg.size[1]/2-prod.size[1]/2))
     )
     out = Image.composite(layer, bg, layer)
-    out.save('result.jpg', quality=100)
+    # quality： 保存图像的质量，值的范围从1（最差）到95（最佳）
+    # 默认值为75，使用中应尽量避免高于95的值; 
+    # 100会禁用部分JPEG压缩算法，并导致大文件图像质量几乎没有任何增益
+    out.save('result.jpg', quality=95)
     out.show()
 
