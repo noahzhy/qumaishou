@@ -1,4 +1,5 @@
 import colorsys
+from PIL import Image, ImageOps, ImageDraw, ImageFont
  
 def get_dominant_color(image):
     #颜色模式转换，以便输出rgb颜色值
@@ -34,3 +35,23 @@ def get_dominant_color(image):
             hex_color = '#{:02x}{:02x}{:02x}'.format(r, g, b).upper()
 
     return hex_color
+
+
+def add_border(input_image, border, color=0):
+    # 先剪裁边框宽度，再扩展出边框来
+    img = ImageOps.crop(input_image, border=border)
+ 
+    if isinstance(border, int) or isinstance(border, tuple):
+        bimg = ImageOps.expand(img, border=border, fill=color)
+    else:
+        raise RuntimeError('Border is not an integer or tuple!')
+ 
+    return bimg
+
+
+def add_text(img, text, font, size, color):
+    draw = ImageDraw.Draw(img) #修改图片
+    f = ImageFont.truetype('img_fusion/font/huangyouti.ttf', size)
+    draw.text((50,50), text, color, font=f) #利用ImageDraw的内置函数，在图片上写入文字
+    # img.show()
+    return img

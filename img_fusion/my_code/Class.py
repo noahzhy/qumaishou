@@ -160,24 +160,8 @@ class ImgText:
         else:
             return False
 
-        # for i in range(x.shape[0]):
-        #     for j in range(x.shape[1]):
-        #         print(x[i][j])
-
     def img_generator(self, img_list, text_list):
         pass
-
-
-def add_border(input_image, border, color=0):
-    # 先剪裁边框宽度，再扩展出边框来
-    img = ImageOps.crop(input_image, border=border)
- 
-    if isinstance(border, int) or isinstance(border, tuple):
-        bimg = ImageOps.expand(img, border=border, fill=color)
-    else:
-        raise RuntimeError('Border is not an integer or tuple!')
- 
-    return bimg
 
 
 if __name__ == "__main__":
@@ -186,11 +170,10 @@ if __name__ == "__main__":
     img_text.background.set_url('img_fusion/img_for_test/background.jpg')
     img_text.product.set_url('img_fusion/img_for_test/product_01.png')
     img_text.product.set_rotation('12')
-    img_text.frame.set_border('40')
+    img_text.frame.set_border('30')
     # img_text.frame.set_color('02')
     
     # testing
-
     bg = Image.open(img_text.background.get_url())
     prod = Image.open(img_text.product.get_url())
     prod = prod.resize((500, 500))
@@ -202,17 +185,13 @@ if __name__ == "__main__":
         int((bg.size[1]-prod.size[1])/2))
     )
     out = Image.composite(layer, bg, layer)
-    # out = add_border(out, img_text.frame.get_border(), img_text.frame.get_color())
-    out = add_border(out, img_text.frame.get_border(), img_text.product.get_dominant_color())
-
-    # out = add_border(out, 50, '#FFD700')
+    out = img_tool.add_border(out, img_text.frame.get_border(), img_text.product.get_dominant_color())
+    out = img_tool.add_text(out, "香奈儿嘉柏丽尔香水", '', 50, Color().get_color(0))
     # quality: 保存图像的质量，值的范围从1（最差）到95（最佳）
     # 默认值为75，使用中应尽量避免高于95的值; 
     # 100会禁用部分JPEG压缩算法，并导致大文件图像质量几乎没有任何增益
     out.save('result.jpg', quality=95)
     # out.show()
-
-    print(img_text.product.get_dominant_color())
 
  
  
