@@ -137,11 +137,18 @@ class ImgText:
         #         print(x[i][j])
 
     def img_generator(self, img_list, text_list):
-        for img in img_list:
-            pass
-        
-        for text in text_list:
-            pass
+        pass
+
+
+def add_border(input_image, border, color=0):
+    img = input_image
+ 
+    if isinstance(border, int) or isinstance(border, tuple):
+        bimg = ImageOps.expand(img, border=border, fill=color)
+    else:
+        raise RuntimeError('Border is not an integer or tuple!')
+ 
+    return bimg
 
 
 if __name__ == "__main__":
@@ -152,7 +159,7 @@ if __name__ == "__main__":
     img_text.product.set_rotation('13')
     
     # import cv2
-    from PIL import Image
+    from PIL import Image, ImageOps
 
     bg = Image.open(img_text.background.get_url())
     prod = Image.open(img_text.product.get_url())
@@ -161,12 +168,19 @@ if __name__ == "__main__":
     layer = Image.new('RGBA', bg.size, (0,0,0,0))
     layer.paste(
         prod,
-        (int(bg.size[0]/2-prod.size[0]/2), int(bg.size[1]/2-prod.size[1]/2))
+        (int((bg.size[0]-prod.size[0])/2),
+        int((bg.size[1]-prod.size[1])/2))
     )
     out = Image.composite(layer, bg, layer)
+    # out = add_border(out, 50, '#CD5C5C')
+    # out = add_border(out, 50, '#FFD700')
     # quality: 保存图像的质量，值的范围从1（最差）到95（最佳）
     # 默认值为75，使用中应尽量避免高于95的值; 
     # 100会禁用部分JPEG压缩算法，并导致大文件图像质量几乎没有任何增益
     out.save('result.jpg', quality=95)
-    out.show()
+    # out.show()
+
+ 
+ 
+
 
