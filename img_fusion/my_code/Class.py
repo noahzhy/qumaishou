@@ -1,8 +1,8 @@
 import numpy as np
 import json
 import sys
-# import cv2
-from PIL import Image, ImageOps
+import cv2
+from PIL import Image, ImageOps, ImageFont
 # 导入同级目录下其他文件夹下的文件
 sys.path.append("./")
 import tools.img_tools as img_tool
@@ -20,6 +20,19 @@ class Color:
         self.light_orange = ''
 
     def get_color(self, idx):
+        dict_items = self.__dict__
+        dictlist = []
+        for _, value in dict_items.items():
+            temp = [value]
+            dictlist.append(temp)
+        return dictlist[idx][0]
+
+
+class Font:
+    def __init__(self):
+        self.huangyouti = 'img_fusion/font/huangyouti.ttf'
+
+    def get_font(self, idx):
         dict_items = self.__dict__
         dictlist = []
         for _, value in dict_items.items():
@@ -91,7 +104,6 @@ class ImgBase(object):
 
     def get_dominant_color(self):
         return '#000' if self.url == '' else img_tool.get_dominant_color(Image.open(self.url))
-        
 
 class TextBase:
     def __init__(self, obj=default_dict):
@@ -100,6 +112,37 @@ class TextBase:
         self.color = obj.get('C')
         self.position = obj.get('P')
 
+        self.text = ''
+
+    def set_text(self, text):
+        self.text = text
+
+    def get_text(self):
+        return self.text
+
+    def set_font(self, font):
+        self.font = font
+
+    def get_font(self):
+        return self.font
+
+    def set_size(self, size):
+        self.size = size
+
+    def get_size(self):
+        return self.size
+
+    def set_color(self, color):
+        self.color = Color().get_color(int(color))
+
+    def get_color(self):
+        return self.color
+
+    def set_position(self, position):
+        self.position = position
+
+    def get_position(self):
+        return self.position    
 
 class ImgText:
     def __init__(self):
@@ -171,6 +214,14 @@ if __name__ == "__main__":
     img_text.product.set_url('img_fusion/img_for_test/product_01.png')
     img_text.product.set_rotation('12')
     img_text.frame.set_border('30')
+    
+    img_text.brand.set_text("香奈儿嘉柏丽尔香水")
+    img_text.brand.set_size(60)
+    img_text.brand.set_position((50,50))
+
+    # img_text.name.set_text("香奈儿嘉柏丽尔香水")
+    # img_text.name.set_size(60)
+    # img_text.name.set_position((50,100))
     # img_text.frame.set_color('02')
     
     # testing
@@ -186,7 +237,36 @@ if __name__ == "__main__":
     )
     out = Image.composite(layer, bg, layer)
     out = img_tool.add_border(out, img_text.frame.get_border(), img_text.product.get_dominant_color())
-    out = img_tool.add_text(out, "香奈儿嘉柏丽尔香水", '', 50, Color().get_color(0))
+    
+    out = img_tool.text_border(
+        out,
+        50,50,
+        img_text.brand.get_text(),
+        ImageFont.truetype(Font().get_font(0), img_text.brand.get_size()),
+        img_tool.get_dominant_color(prod),
+        Color().get_color(1),
+        4
+    )
+
+    # 文字部分
+    # out = img_tool.add_text(
+    #     out,
+    #     img_text.brand.get_text(),
+    #     Font().get_font(0),
+    #     img_text.brand.get_size(),
+    #     Color().get_color(0),
+    #     img_text.brand.get_position()
+    # )
+
+    # out = img_tool.add_text(
+    #     out,
+    #     img_text.name.get_text(),
+    #     Font().get_font(0),
+    #     img_text.name.get_size(),
+    #     Color().get_color(0),
+    #     img_text.name.get_position()
+    # )
+
     # quality: 保存图像的质量，值的范围从1（最差）到95（最佳）
     # 默认值为75，使用中应尽量避免高于95的值; 
     # 100会禁用部分JPEG压缩算法，并导致大文件图像质量几乎没有任何增益

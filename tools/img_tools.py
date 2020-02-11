@@ -49,9 +49,29 @@ def add_border(input_image, border, color=0):
     return bimg
 
 
-def add_text(img, text, font, size, color):
+def add_text(img, text, font, size, color, position):
     draw = ImageDraw.Draw(img) #修改图片
     f = ImageFont.truetype('img_fusion/font/huangyouti.ttf', size)
-    draw.text((50,50), text, color, font=f) #利用ImageDraw的内置函数，在图片上写入文字
+    draw.text(position, text, color, font=f) #利用ImageDraw的内置函数，在图片上写入文字
     # img.show()
     return img
+
+
+def text_border(im, x, y, text, font, fillcolor, shadowcolor, bs):
+    draw = ImageDraw.Draw(im)
+    # thin border
+    draw.text((x - bs, y), text, font=font, fill=shadowcolor)
+    draw.text((x + bs, y), text, font=font, fill=shadowcolor)
+    draw.text((x, y - bs), text, font=font, fill=shadowcolor)
+    draw.text((x, y + bs), text, font=font, fill=shadowcolor)
+ 
+    # thicker border
+    draw.text((x - bs, y - bs), text, font=font, fill=shadowcolor)
+    draw.text((x + bs, y - bs), text, font=font, fill=shadowcolor)
+    draw.text((x - bs, y + bs), text, font=font, fill=shadowcolor)
+    draw.text((x + bs, y + bs), text, font=font, fill=shadowcolor)
+ 
+    # now draw the text over it
+    draw.text((x, y), text, font=font, fill=fillcolor)
+
+    return im
