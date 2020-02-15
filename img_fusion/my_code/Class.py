@@ -211,8 +211,8 @@ if __name__ == "__main__":
     # print(ImgText().is_empty(1))
     img_text = ImgText()
     img_text.background.set_url('img_fusion/img_for_test/background.jpg')
-    img_text.product.set_url('img_fusion/img_for_test/product_01.png')
-    img_text.product.set_rotation('12')
+    img_text.product.set_url(r'E:\my_github\qumaishou\cutout.png')
+    img_text.product.set_rotation('00')
     img_text.frame.set_border('30')
     
     img_text.brand.set_text("香奈儿嘉柏丽尔香水")
